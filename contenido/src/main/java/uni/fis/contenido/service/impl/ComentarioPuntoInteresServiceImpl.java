@@ -71,5 +71,4 @@ public class ComentarioPuntoInteresServiceImpl implements ComentarioPuntoInteres
         return mapper.toDTO(saved);
     }
 
-
 }
