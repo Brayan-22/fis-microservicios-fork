@@ -27,7 +27,7 @@ public class SecurityConfig {
     private String password;
 
     @Bean
-    @Order(1)
+    @Order(2)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
@@ -47,10 +47,10 @@ public class SecurityConfig {
         return http.build();
     }
     @Bean
-    @Order(2)
+    @Order(1)
     public SecurityFilterChain actuatorSecurityFilterChain(HttpSecurity http) throws Exception {
             return http
-                        .securityMatcher("/actuator/") 
+                        .securityMatcher("/actuator/**") 
                             .authorizeHttpRequests(auth -> auth
                                             .anyRequest().permitAll()
                         )
