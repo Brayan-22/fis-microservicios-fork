@@ -55,8 +55,4 @@ public class RestController {
     public ResponseEntity<ProveedorDTO> consultarProveedor(@PathVariable Integer proveedorId) {
         return ResponseEntity.ok(proveedorService.consultarProveedor(proveedorId));
     }
-    @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<?> consultarUsuarioRemoto(@PathVariable Integer usuarioId) {
-        return ResponseEntity.ok(proveedorService.consultarUsuarioRemoto(usuarioId));
-    }
 }
