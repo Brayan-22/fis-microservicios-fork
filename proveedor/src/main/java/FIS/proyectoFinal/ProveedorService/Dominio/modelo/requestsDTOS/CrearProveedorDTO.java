@@ -1,7 +1,10 @@
-package FIS.proyectoFinal.ProveedorService.Infraestructura.requestDTOS;
+package FIS.proyectoFinal.ProveedorService.Dominio.modelo.requestsDTOS;
 
+import lombok.Data;
 
-public class CreateProveedorDTO {
+@Data
+
+public class CrearProveedorDTO {
     private String nombre;
     private String documento;
     private String correoContacto;

@@ -1,19 +1,16 @@
 package FIS.proyectoFinal.ProveedorService.Aplicacion.repository;
 
-public class ProveedorRepository implements Repository{
 
-    @Override
-    public void save(){
+import java.util.List;
 
-    }
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    @Override
-    public void findById(long id){
+import FIS.proyectoFinal.ProveedorService.Dominio.entidad.ProveedorEntity;
 
-    }
+public interface ProveedorRepository extends JpaRepository<ProveedorEntity, Integer> {
 
-    @Override
-    public void findByProduct(long pid){
+    List<ProveedorEntity> findByTipoProveedorId(Integer tipoId);
 
-    }
+    List<ProveedorEntity> findByIdUsuario(Integer idUsuario);
 }
+
