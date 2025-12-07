@@ -21,14 +21,22 @@ import java.util.List;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-
     private final TokenStrategy jwtTokenStrategy;
     private final JwtTokenInfoExtractor tokenInfoExtractor;
 
-    public JwtAuthenticationFilter(@Qualifier("JWTTokenStrategy") TokenStrategy jwtTokenStrategy, JwtTokenInfoExtractor tokenInfoExtractor) {
+    public JwtAuthenticationFilter(@Qualifier("JWTTokenStrategy") TokenStrategy jwtTokenStrategy,
+                                   JwtTokenInfoExtractor tokenInfoExtractor) {
         this.jwtTokenStrategy = jwtTokenStrategy;
-
         this.tokenInfoExtractor = tokenInfoExtractor;
+    }
+
+    //
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return path.equals("/api/v1/auth/login") ||
+                path.equals("/api/v1/auth/refresh") ||
+                path.equals("/api/v1/auth/sign-in");
     }
 
     @Override
@@ -40,7 +48,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String token = getTokenFromRequest(request);
 
         if (token != null) {
-
             jwtTokenStrategy.validate(token);
 
             String username = tokenInfoExtractor.getUsername(token);
@@ -56,7 +63,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         filterChain.doFilter(request, response);
-
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
@@ -66,6 +72,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return authHeader.substring(7);
         }
         return null;
-
     }
 }

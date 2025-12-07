@@ -1,6 +1,5 @@
 package fis.auth.infrastructure.controller;
 
-
 import fis.auth.application.service.LoginService;
 import fis.auth.application.service.SignInService;
 import fis.auth.domain.model.Login;
@@ -25,8 +24,7 @@ public class AuthController {
 
     public AuthController(
             LoginService loginService,
-            SignInService signInService
-    ) {
+            SignInService signInService) {
         this.loginService = loginService;
         this.signInService = signInService;
     }
@@ -52,6 +50,7 @@ public class AuthController {
 
     @PostMapping("refresh")
     public ResponseEntity<ApiResponse<Token>> refresh(@RequestBody RefreshRequest request) {
+        log.info("Entrando a refresh en controller ...");
         return ResponseEntity.ok()
                 .body(ApiResponse.success("Token exitoso", loginService.refresh(request.refreshToken())));
     }
