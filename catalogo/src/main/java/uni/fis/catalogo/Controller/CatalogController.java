@@ -66,12 +66,12 @@ public class CatalogController {
     }
     
     @PostMapping("/{catalogoId}/producto")
-    public ResponseEntity<Long> agregarProductoAlCatalogo(
+    public ResponseEntity<ProductoResponse> agregarProductoAlCatalogo(
             @PathVariable("catalogoId") Integer catalogoId,
             @RequestBody ProductoRequest productoRequest) {
         System.out.println("cantidad recibida: " + productoRequest.getCantidad());
-        long productoId = itemService.agregarProducto(productoRequest, catalogoId);
-        return new ResponseEntity<>(productoId, HttpStatus.CREATED);
+        ProductoResponse productoResponse = itemService.agregarProducto(productoRequest, catalogoId);
+        return new ResponseEntity<>(productoResponse, HttpStatus.CREATED);
     }
     
     @DeleteMapping("/{idCatalogo}/producto/{id}/eliminar")
@@ -106,11 +106,11 @@ public class CatalogController {
     }
     
     @PostMapping("/{catalogoId}/servicio")
-    public ResponseEntity<Long> agregarServicioAlCatalogo(
+    public ResponseEntity<ServicioResponse> agregarServicioAlCatalogo(
             @PathVariable("catalogoId") Integer catalogoId,
             @RequestBody ServicioRequest servicioRequest) {
-        long servicioId = itemService.agregarServicio(servicioRequest, catalogoId);
-        return new ResponseEntity<>(servicioId, HttpStatus.CREATED);
+        ServicioResponse servicioResponse = itemService.agregarServicio(servicioRequest, catalogoId);
+        return new ResponseEntity<>(servicioResponse, HttpStatus.CREATED);
     }
     
     @DeleteMapping("/{idCatalogo}/servicio/{id}/eliminar")

@@ -12,7 +12,7 @@ public class ProductoRequest {
     private BigDecimal precio;
     private int cantidad;
     private String tamaño;
-    private String peso;
+    private BigDecimal peso;
     private Integer id_color;
     private Integer id_unidad_peso;
 }

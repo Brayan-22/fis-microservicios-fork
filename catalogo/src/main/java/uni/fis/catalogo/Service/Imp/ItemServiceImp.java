@@ -25,7 +25,7 @@ public class ItemServiceImp implements ItemService {
     private ServicioRepository servicioRepository;
 
     @Override
-    public long agregarProducto(ProductoRequest productoRequest, Integer catalogoId) {
+    public ProductoResponse agregarProducto(ProductoRequest productoRequest, Integer catalogoId) {
         Producto producto = Producto.builder()
                 .idCatalogo(catalogoId)
                 .nombre(productoRequest.getNombre())
@@ -40,7 +40,20 @@ public class ItemServiceImp implements ItemService {
                 .id_unidad_peso(productoRequest.getId_unidad_peso())
                 .build();
         productoRepository.save(producto);
-        return producto.getId();
+        return ProductoResponse.builder()
+                .id(producto.getId())
+                .idCatalogo(producto.getIdCatalogo())
+                .nombre(producto.getNombre())
+                .precio(producto.getPrecio())
+                .fechaCreacion(producto.getFechaCreacion())
+                .valoración(producto.getValoracion())
+                .disponible(producto.isDisponible())
+                .cantidad(producto.getCantidad())
+                .tamaño(producto.getTamano())
+                .peso(producto.getPeso())
+                .id_color(producto.getId_color())
+                .id_unidad_peso(producto.getId_unidad_peso())
+                .build();
     }
     
     @Override 
@@ -70,7 +83,7 @@ public class ItemServiceImp implements ItemService {
         productoRepository.deleteById(id);
     }
     @Override 
-    public long agregarServicio(ServicioRequest servicioRequest, Integer catalogoId){
+    public ServicioResponse agregarServicio(ServicioRequest servicioRequest, Integer catalogoId){
         Servicio servicio = Servicio.builder()
                 .idCatalogo(catalogoId)
                 .nombre(servicioRequest.getNombre())
@@ -82,7 +95,17 @@ public class ItemServiceImp implements ItemService {
                 .horario(servicioRequest.getHorario())
                 .build();
         servicioRepository.save(servicio);
-        return servicio.getId();
+        return ServicioResponse.builder()
+                .id(servicio.getId())
+                .idCatalogo(servicio.getIdCatalogo())
+                .nombre(servicio.getNombre())
+                .precio(servicio.getPrecio())
+                .fechaCreacion(servicio.getFechaCreacion())
+                .valoración(servicio.getValoracion())
+                .disponible(servicio.isDisponible())
+                .duracion(servicio.getDuracion())
+                .horario(servicio.getHorario())
+                .build();
     }   
     @Override 
     public ServicioResponse obtenerServicioPorId(Integer id) {

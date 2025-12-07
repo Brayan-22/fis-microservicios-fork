@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.Date;
 
-import org.postgresql.util.PGInterval;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -55,7 +53,7 @@ public class Servicio {
     private boolean disponible;
     
     @Column(name = "duracion", table = "servicio", nullable = false, columnDefinition = "INTERVAL")
-    private PGInterval duracion;
+    private String duracion;
     
     @Column(name = "horario", table = "servicio", nullable = false)
     private LocalTime horario;

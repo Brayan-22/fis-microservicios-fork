@@ -58,7 +58,7 @@ public class Producto {
     private String tamano;
     
     @Column(name = "peso", table = "producto", nullable = false)
-    private String peso;
+    private BigDecimal peso;
     
     @Column(name = "id_color", table = "producto", nullable = false)
     private Integer  id_color;

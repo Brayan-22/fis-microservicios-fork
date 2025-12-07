@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.Date;
 
-import org.postgresql.util.PGInterval;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +21,6 @@ public class ServicioResponse {
     private Date fechaCreacion;
     private BigDecimal valoración;
     private boolean disponible;
-    private PGInterval duracion;
+    private String duracion;
     private LocalTime horario;
 }

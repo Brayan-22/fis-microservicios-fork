@@ -63,7 +63,7 @@ public class CatalogoServiceImp implements CatalogoService {
         
         
         
-        
+    
         
         findByIdCatalogo(catalogoId).stream()
             .map(producto -> ProductoResponse.builder()
@@ -72,6 +72,14 @@ public class CatalogoServiceImp implements CatalogoService {
                     .precio(producto.getPrecio())
                     .cantidad(producto.getCantidad())
                     .idCatalogo(producto.getIdCatalogo())
+                    .fechaCreacion(producto.getFechaCreacion())
+                    .valoración(producto.getValoracion())
+                    .disponible(producto.isDisponible())
+                    .cantidad(producto.getCantidad())
+                    .tamaño(producto.getTamano())
+                    .peso(producto.getPeso())
+                    .id_color(producto.getId_color())
+                    .id_unidad_peso(producto.getId_unidad_peso())
                     .build())
             .toArray(ProductoResponse[]::new);  
 
@@ -83,10 +91,14 @@ public class CatalogoServiceImp implements CatalogoService {
         ServicioResponse[] servicios = servicioRepository.findByIdCatalogo(catalogoId).stream()
             .map(servicio -> ServicioResponse.builder()
                     .id(servicio.getId())
+                    .idCatalogo(servicio.getIdCatalogo())
                     .nombre(servicio.getNombre())
                     .precio(servicio.getPrecio())
+                    .fechaCreacion(servicio.getFechaCreacion())
+                    .valoración(servicio.getValoracion())
+                    .disponible(servicio.isDisponible())
                     .duracion(servicio.getDuracion())
-                    .idCatalogo(servicio.getIdCatalogo())
+                    .horario(servicio.getHorario())
                     .build())
             .toArray(ServicioResponse[]::new);
 
