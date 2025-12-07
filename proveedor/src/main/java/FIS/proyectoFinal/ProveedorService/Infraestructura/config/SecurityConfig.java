@@ -38,8 +38,6 @@ public class SecurityConfig {
                     .hasRole("PROVEEDOR")
                 .requestMatchers("DELETE", "/api/proveedores/servicios/{servicioId}")
                     .hasRole("PROVEEDOR")
-                .requestMatchers("GET", "/api/proveedores/{proveedorId}")
-                    .authenticated()
                 .anyRequest()
                     .authenticated()
             )
