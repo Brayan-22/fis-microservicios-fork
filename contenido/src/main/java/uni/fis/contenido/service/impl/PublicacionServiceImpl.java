@@ -55,14 +55,6 @@ public class PublicacionServiceImpl implements PublicacionService {
     }
 
     @Override
-    public List<PublicacionResponseDTO> listarTodo() {
-        return publicacionRepository.findAll()
-                .stream()
-                .map(publicacionMapper::toDTO)
-                .toList();
-    }
-
-    @Override
     public List<PublicacionResponseDTO> listarPorForo(Integer idForo) {
         return publicacionRepository.findByForo(idForo)
                 .stream()

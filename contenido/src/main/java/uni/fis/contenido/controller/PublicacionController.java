@@ -48,14 +48,6 @@ public class PublicacionController {
                                                 publicacionService.listarPorUsuario(usuario)));
         }
 
-        @GetMapping()
-        public ResponseEntity<ApiResponse<List<PublicacionResponseDTO>>> listarTodo() {
-                return ResponseEntity.ok(
-                                ApiResponse.success(
-                                                "Publicaciones listadas correctamente",
-                                                publicacionService.listarTodo()));
-        }
-
     @GetMapping()
     public ResponseEntity<ApiResponse<List<PublicacionResponseDTO>>> listarTodas() {
         return ResponseEntity.ok(
