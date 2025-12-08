@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/v1/multimedia")
+@RequestMapping("/multimedia")
 public class MultimediaController {
 
     private final MultimediaService multimediaService;
