@@ -23,7 +23,6 @@ public class OrdenItemServiceImp implements OrdenItemService{
     CatalogoClient catalogoClient;
     @Override
     public Integer agregarOrdenItem(OrdenItemRequest ordenItemRequest){
-        // Obtener precio del catálogo y calcular subtotal
         ProductoResponse producto = catalogoClient.obtenerProductoPorId(ordenItemRequest.getId_item());
         BigDecimal valorUnitario = null;
         if (producto != null) {

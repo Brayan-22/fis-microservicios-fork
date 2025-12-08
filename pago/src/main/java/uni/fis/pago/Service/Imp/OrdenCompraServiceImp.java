@@ -1,5 +1,6 @@
 package uni.fis.pago.Service.Imp;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.log4j.Log4j2;
 import uni.fis.pago.Entity.OrdenCompra;
+import uni.fis.pago.Entity.OrdenItem;
 import uni.fis.pago.Exceptions.Exceptions;
+import uni.fis.pago.Model.OrdenCompraDTO.OrdenCompraRequest;
 import uni.fis.pago.Model.OrdenCompraDTO.OrdenCompraResponse;
 import uni.fis.pago.Repository.OrdenCompraRepository;
 import uni.fis.pago.Repository.OrdenItemRepository;
@@ -23,10 +26,11 @@ public class OrdenCompraServiceImp implements OrdenCompraService{
     OrdenItemRepository ordenItemRepository;
 
     @Override
-    public Integer crearOrdenCompra(Integer idPago){
+    public Integer crearOrdenCompra(OrdenCompraRequest ordenCompraRequest){
         OrdenCompra ordenCompra = OrdenCompra.builder()
                                     .fecha(new Date())
-                                    .idPago(idPago)
+                                    .idPago(ordenCompraRequest.getIdPago())
+                                    .idOrdenItem(ordenCompraRequest.getIdOrdenItem())
                                 .build();
         log.info("Procesando la información de la orden de compra");
         ordenCompraRepository.save(ordenCompra);
@@ -50,9 +54,21 @@ public class OrdenCompraServiceImp implements OrdenCompraService{
         OrdenCompraResponse response = OrdenCompraResponse.builder()
                                         .id(ordenCompra.getId())
                                         .fecha(ordenCompra.getFecha())
-                                        .id_pago(ordenCompra.getIdPago())
+                                        .idPago(ordenCompra.getIdPago())
+                                        .idOrdenItem(ordenCompra.getIdOrdenItem())
                                     .build();   
         log.info("Orden de compra encontrada exitosamente!");                 
         return response;
+    }
+    @Override
+    public BigDecimal calcularMontoTotal(Integer idPago){
+        OrdenCompra[] ordenesCompras = ordenCompraRepository.findByIdPago(idPago);
+        BigDecimal total = new BigDecimal(0);
+        for(OrdenCompra ordenCompra : ordenesCompras){
+            OrdenItem ordenItem = ordenItemRepository.findById(ordenCompra.getIdOrdenItem())
+            .orElseThrow(()-> new Exceptions("La Orden de compra con el id " + ordenCompra.getIdOrdenItem() +" no existe","ORDEN_ITEM_NOT_FOUND"));
+            total = total.add(ordenItem.getSubtotal());
+        }
+        return total;
     }
 }

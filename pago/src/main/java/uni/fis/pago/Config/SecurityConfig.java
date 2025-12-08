@@ -24,24 +24,21 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
+            
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("POST", "/api/pago/crearPago").authenticated()
-                .requestMatchers("POST", "/api/pago/crearOrdenCompra").authenticated()
-                .requestMatchers("POST", "/api/pago/crearOrdenItem").authenticated()
+                .requestMatchers("/actuator/**").permitAll()
                 
-                .requestMatchers("GET", "/api/pago/ObtenerPago/{id}").authenticated()
+                .requestMatchers("POST", "/api/pago/crearPago").permitAll()
                 
-                .requestMatchers("GET", "/api/pago/ObtenerOrdenCompra/{id}").authenticated()
-                .requestMatchers("DELETE", "/api/pago/EliminarOrdenCompra/{idOrdenCompra}").authenticated()
-                .requestMatchers("GET", "/api/pago/ObtenerOrdenCompra/{idOrdenCompra}/OrdenesItems").authenticated()
-                
-                .requestMatchers("GET", "/api/pago/ObtenerOrdenItem/{idOrdenItem}").authenticated()
-                .requestMatchers("DELETE", "/api/pago/EliminarOrdenItem/{idOrdenItem}").authenticated()
+                .requestMatchers("/api/pago/**").authenticated()
                 
                 .anyRequest().authenticated()
             )
+            
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            
             .addFilterAfter(pagoOwnershipFilter, JwtAuthenticationFilter.class);
 
         return http.build();

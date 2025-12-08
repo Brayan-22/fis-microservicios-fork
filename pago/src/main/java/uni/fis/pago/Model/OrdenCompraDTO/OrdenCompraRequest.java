@@ -1,16 +1,16 @@
-package uni.fis.pago.Model.PagoDTO;
+package uni.fis.pago.Model.OrdenCompraDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
 
-public class PagoRequest {
-    private Integer id_usuario;
-    private Integer id_metodo_pago;
+public class OrdenCompraRequest {
+    private Integer idPago;
+    private Integer idOrdenItem;
 }
