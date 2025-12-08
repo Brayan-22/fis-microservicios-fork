@@ -36,7 +36,7 @@ public class PagoController {
         String response = pagoService.agregarProducto(ordenItemRequest, idPago);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-    @DeleteMapping("/producto/{idProducto}")
+    @DeleteMapping("{idPago}/eliminarProducto/{idProducto}")
     public ResponseEntity<String> eliminarProductoById(@PathVariable Integer idProducto){
         String response = pagoService.eliminarProductoById(idProducto);
         return new ResponseEntity<>(response, HttpStatus.OK);
