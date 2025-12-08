@@ -34,20 +34,17 @@ public class PagoOwnershipFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         String method = request.getMethod();
 
-        // Permitir actuator sin validaciones
         if (path.startsWith("/actuator")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Permitir crear pago sin autenticación
-        if (method.equalsIgnoreCase("POST") && path.endsWith("/api/pago/crearPago")) {
+        if (!path.contains("/api/pago")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Solo aplicar este filtro a rutas de /api/pago
-        if (!path.contains("/api/pago")) {
+        if (method.equalsIgnoreCase("POST") && path.endsWith("/api/pago/crearPago")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -92,8 +89,10 @@ public class PagoOwnershipFilter extends OncePerRequestFilter {
 
     private Integer extractPagoIdFromPath(String path) {
         try {
+            String[] parts = path.split("/");
+            
+            // GET /api/pago/ObtenerPago/{id}
             if (path.contains("/ObtenerPago/")) {
-                String[] parts = path.split("/");
                 for (int i = 0; i < parts.length - 1; i++) {
                     if ("ObtenerPago".equals(parts[i]) && parts[i + 1].matches("\\d+")) {
                         return Integer.parseInt(parts[i + 1]);
@@ -102,7 +101,15 @@ public class PagoOwnershipFilter extends OncePerRequestFilter {
             }
 
             if (path.contains("/agregarProducto")) {
-                String[] parts = path.split("/");
+                for (int i = 0; i < parts.length; i++) {
+                    if ("pago".equals(parts[i]) && i + 1 < parts.length 
+                        && parts[i + 1].matches("\\d+")) {
+                        return Integer.parseInt(parts[i + 1]);
+                    }
+                }
+            }
+
+            if (path.contains("/eliminarProducto/")) {
                 for (int i = 0; i < parts.length; i++) {
                     if ("pago".equals(parts[i]) && i + 1 < parts.length 
                         && parts[i + 1].matches("\\d+")) {
@@ -112,16 +119,11 @@ public class PagoOwnershipFilter extends OncePerRequestFilter {
             }
 
             if (path.contains("/TerminarPago/")) {
-                String[] parts = path.split("/");
                 for (int i = 0; i < parts.length - 1; i++) {
                     if ("TerminarPago".equals(parts[i]) && parts[i + 1].matches("\\d+")) {
                         return Integer.parseInt(parts[i + 1]);
                     }
                 }
-            }
-
-            if (path.contains("/producto/")) {
-                return null;
             }
 
         } catch (Exception e) {
