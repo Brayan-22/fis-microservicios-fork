@@ -91,8 +91,6 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <!-- Guava para rate limiting -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
