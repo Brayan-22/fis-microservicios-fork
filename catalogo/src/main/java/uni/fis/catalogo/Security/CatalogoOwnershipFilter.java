@@ -30,11 +30,16 @@ public class CatalogoOwnershipFilter extends OncePerRequestFilter {
 
         String path = request.getRequestURI();
         String method = request.getMethod();
-        
+
         log.info("=== OWNERSHIP FILTER === Path: {}, Method: {}", path, method);
-        
-        boolean requiresOwnershipCheck = 
-            (method.equals("POST") && path.matches(".*/api/catalogo/crear.*")) ||
+
+        if ("GET".equalsIgnoreCase(method) && path.contains("/api/catalogo")) {
+            log.info("GET sobre /api/catalogo detected - permitiendo acceso público (sin verificación de ownership)");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        boolean requiresOwnershipCheck =
             (method.equals("POST") && path.matches(".*/api/catalogo/\\d+/producto.*")) ||
             (method.equals("POST") && path.matches(".*/api/catalogo/\\d+/servicio.*")) ||
             (method.equals("DELETE") && path.matches(".*/api/catalogo/\\d+/producto/\\d+/eliminar.*")) ||
@@ -49,7 +54,7 @@ public class CatalogoOwnershipFilter extends OncePerRequestFilter {
 
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            
+
             if (authentication == null) {
                 log.error("Authentication es null");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -57,9 +62,9 @@ public class CatalogoOwnershipFilter extends OncePerRequestFilter {
                 response.getWriter().write("{\"error\": \"Usuario no autenticado\"}");
                 return;
             }
-            
+
             log.info("Authentication principal type: {}", authentication.getPrincipal().getClass().getName());
-            
+
             if (!(authentication.getPrincipal() instanceof UserPrincipal)) {
                 log.error("Principal no es instancia de UserPrincipal");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -70,17 +75,11 @@ public class CatalogoOwnershipFilter extends OncePerRequestFilter {
 
             UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
             Integer userId = userPrincipal.getUserId();
-            
+
             log.info("UserId del token: {}", userId);
 
-            if (method.equals("POST") && path.matches(".*/api/catalogo/crear.*")) {
-                log.info("Creación de catálogo, sin verificación de ownership previo");
-                filterChain.doFilter(request, response);
-                return;
-            }
-
             Integer catalogoId = extractCatalogoId(path);
-            
+
             if (catalogoId == null) {
                 log.error("No se pudo extraer catalogoId de la ruta: {}", path);
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -88,11 +87,11 @@ public class CatalogoOwnershipFilter extends OncePerRequestFilter {
                 response.getWriter().write("{\"error\": \"No se pudo identificar el catálogo en la URL\"}");
                 return;
             }
-            
+
             log.info("CatalogoId extraído: {}", catalogoId);
 
             var catalogoOpt = catalogoRepository.findById(catalogoId);
-            
+
             if (catalogoOpt.isEmpty()) {
                 log.warn("Catálogo con id {} no encontrado", catalogoId);
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -103,19 +102,19 @@ public class CatalogoOwnershipFilter extends OncePerRequestFilter {
 
             var catalogo = catalogoOpt.get();
             Integer idProveedor = catalogo.getIdProveedor();
-            
+
             log.info("IdProveedor del catálogo: {}", idProveedor);
             log.info("Comparando userId {} con idProveedor {}", userId, idProveedor);
 
             if (!idProveedor.equals(userId)) {
-                log.warn("Usuario {} intentó acceder al catálogo {} que pertenece al proveedor {}", 
+                log.warn("Usuario {} intentó acceder al catálogo {} que pertenece al proveedor {}",
                          userId, catalogoId, idProveedor);
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 response.setContentType("application/json");
                 response.getWriter().write("{\"error\": \"No tienes permiso para modificar este catálogo\"}");
                 return;
             }
-            
+
             log.info("Verificación de ownership exitosa para userId {} en catalogoId {}", userId, catalogoId);
 
         } catch (NumberFormatException e) {
@@ -138,7 +137,7 @@ public class CatalogoOwnershipFilter extends OncePerRequestFilter {
     private Integer extractCatalogoId(String path) {
         try {
             log.debug("Extrayendo catalogoId de: {}", path);
-            
+
             if (path.contains("/api/catalogo/")) {
                 String[] parts = path.split("/");
                 for (int i = 0; i < parts.length; i++) {
@@ -151,7 +150,7 @@ public class CatalogoOwnershipFilter extends OncePerRequestFilter {
                     }
                 }
             }
-            
+
             String[] parts = path.split("/");
             if (parts.length > 1) {
                 for (String part : parts) {
