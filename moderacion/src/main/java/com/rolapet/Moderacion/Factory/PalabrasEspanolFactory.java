@@ -33,7 +33,6 @@ public class PalabrasEspanolFactory extends PalabrasMalSonantesFactory {
         palabras.add(new PalabraProhibidaData("culero", "Vulgaridad"));
         palabras.add(new PalabraProhibidaData("güey", "Vulgaridad leve"));
         palabras.add(new PalabraProhibidaData("pinche", "Vulgaridad"));
-        palabras.add(new PalabraProhibidaData("chingar", "Vulgaridad"));
         palabras.add(new PalabraProhibidaData("mamada", "Vulgaridad sexual"));
         palabras.add(new PalabraProhibidaData("chupada", "Vulgaridad sexual"));
         palabras.add(new PalabraProhibidaData("cojones", "Vulgaridad"));
