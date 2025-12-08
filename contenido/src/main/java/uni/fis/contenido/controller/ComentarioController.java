@@ -1,6 +1,8 @@
 package uni.fis.contenido.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import uni.fis.contenido.dto.ApiResponse;
 import uni.fis.contenido.dto.ComentarioResponseDTO;
 import uni.fis.contenido.dto.CrearComentarioDTO;
 import uni.fis.contenido.entity.ComentarioEntity;
@@ -22,18 +24,39 @@ public class ComentarioController {
     }
 
     @PostMapping
-    public ResponseEntity<ComentarioEntity> crear(@RequestBody CrearComentarioDTO dto) {
-        return ResponseEntity.ok(comentarioService.crearComentario(dto));
+    public ResponseEntity<ApiResponse<ComentarioEntity>> crear(
+            @RequestBody CrearComentarioDTO dto
+    ) {
+        ComentarioEntity comentario = comentarioService.crearComentario(dto);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("Comentario creado correctamente", comentario)
+        );
     }
 
     @GetMapping("/usuario/{usuario}")
-    public ResponseEntity<List<ComentarioResponseDTO>> listarPorUsuario(@PathVariable String usuario) {
-        Integer usuarioint = Integer.parseInt(usuario);
-        return ResponseEntity.ok(comentarioService.listarPorUsuario(usuarioint));
+    public ResponseEntity<ApiResponse<List<ComentarioResponseDTO>>> listarPorUsuario(
+            @PathVariable String usuario
+    ) {
+        Integer usuarioInt = Integer.parseInt(usuario);
+
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "Comentarios listados correctamente",
+                        comentarioService.listarPorUsuario(usuarioInt)
+                )
+        );
     }
 
     @GetMapping("/publicacion/{idPublicacion}")
-    public ResponseEntity<List<ComentarioResponseDTO>> listarPorPublicacion(@PathVariable Integer idPublicacion) {
-        return ResponseEntity.ok(comentarioService.listarPorPublicacion(idPublicacion));
+    public ResponseEntity<ApiResponse<List<ComentarioResponseDTO>>> listarPorPublicacion(
+            @PathVariable Integer idPublicacion
+    ) {
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "Comentarios encontrados",
+                        comentarioService.listarPorPublicacion(idPublicacion)
+                )
+        );
     }
 }
