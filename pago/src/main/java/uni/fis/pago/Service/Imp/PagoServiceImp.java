@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.log4j.Log4j2;
 import uni.fis.pago.Entity.Pago;
@@ -51,6 +52,7 @@ public class PagoServiceImp implements PagoService{
         Integer idCompra = ordenCompraService.crearOrdenCompra(OrdenCompraRequest.builder().idPago(idPago).idOrdenItem(idItem).build());
         return "Se agrego exitosamente el producto con el id "+ idItem + " asociado a la orden con el id " + idCompra;
     }
+    @Transactional
     @Override
     public String eliminarProductoById(Integer idItem){
         repositorioCompras.deleteByIdOrdenItem(idItem);
@@ -73,6 +75,7 @@ public class PagoServiceImp implements PagoService{
         PagoResponse response = PagoResponse.builder()
                                 .id(pago.getId())
                                 .fecha(pago.getFecha())
+                                .monto_total(pago.getMonto_total())
                                 .id_usuario(pago.getIdUsuario())
                                 .id_metodo_pago(pago.getIdMetodoPago())
                                 .build();
