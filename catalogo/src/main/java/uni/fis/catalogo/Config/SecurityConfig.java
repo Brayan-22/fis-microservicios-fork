@@ -32,6 +32,9 @@ public class SecurityConfig {
                 // Permitir a todo el mundo ver endpoints GET del catálogo
                 .requestMatchers(HttpMethod.GET, "/api/catalogo/**")
                     .permitAll()
+                // Permitir accesso libre a los endpoints de actuator (health, info, etc.)
+                .requestMatchers("/actuator/**")
+                    .permitAll()
                 
                 // Crear catálogo
                 .requestMatchers("POST", "/api/catalogo/crear")

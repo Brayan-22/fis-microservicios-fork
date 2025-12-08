@@ -34,6 +34,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
+        // Skip token processing for actuator endpoints
+        String path = request.getRequestURI();
+        if (path != null && path.startsWith("/actuator")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String authHeader = request.getHeader("Authorization");
         log.debug("Incoming Authorization header: {}", authHeader == null ? "<null>" : authHeader.substring(0, Math.min(50, authHeader.length())) + "...");
         
