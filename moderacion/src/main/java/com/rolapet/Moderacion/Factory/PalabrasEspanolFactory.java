@@ -15,78 +15,76 @@ public class PalabrasEspanolFactory extends PalabrasMalSonantesFactory {
     protected List<PalabraProhibidaData> crearPalabrasProhibidas() {
         List<PalabraProhibidaData> palabras = new ArrayList<>();
 
-        // ========== SPAM Y CONTENIDO NO DESEADO ==========
-        palabras.add(new PalabraProhibidaData("spam", "Contenido repetitivo no deseado"));
-        palabras.add(new PalabraProhibidaData("publicidad", "Promoción no autorizada"));
-        palabras.add(new PalabraProhibidaData("clickbait", "Contenido engañoso para clicks"));
-        palabras.add(new PalabraProhibidaData("bot", "Actividad automatizada sospechosa"));
+        // ========== VULGARIDADES Y GROSERÍAS ==========
+        palabras.add(new PalabraProhibidaData("puta", "Vulgaridad"));
+        palabras.add(new PalabraProhibidaData("puto", "Vulgaridad"));
+        palabras.add(new PalabraProhibidaData("hijo de puta", "Insulto vulgar"));
+        palabras.add(new PalabraProhibidaData("hijueputa", "Insulto vulgar"));
+        palabras.add(new PalabraProhibidaData("cabrón", "Vulgaridad"));
+        palabras.add(new PalabraProhibidaData("coño", "Vulgaridad"));
+        palabras.add(new PalabraProhibidaData("joder", "Vulgaridad"));
+        palabras.add(new PalabraProhibidaData("mierda", "Vulgaridad"));
+        palabras.add(new PalabraProhibidaData("verga", "Vulgaridad"));
+        palabras.add(new PalabraProhibidaData("carajo", "Vulgaridad"));
+        palabras.add(new PalabraProhibidaData("chingada", "Vulgaridad"));
+        palabras.add(new PalabraProhibidaData("pendejo", "Vulgaridad"));
+        palabras.add(new PalabraProhibidaData("marica", "Vulgaridad ofensiva"));
+        palabras.add(new PalabraProhibidaData("maricón", "Vulgaridad ofensiva"));
+        palabras.add(new PalabraProhibidaData("culero", "Vulgaridad"));
+        palabras.add(new PalabraProhibidaData("güey", "Vulgaridad leve"));
+        palabras.add(new PalabraProhibidaData("pinche", "Vulgaridad"));
+        palabras.add(new PalabraProhibidaData("chingar", "Vulgaridad"));
+        palabras.add(new PalabraProhibidaData("mamada", "Vulgaridad sexual"));
+        palabras.add(new PalabraProhibidaData("chupada", "Vulgaridad sexual"));
+        palabras.add(new PalabraProhibidaData("cojones", "Vulgaridad"));
+        palabras.add(new PalabraProhibidaData("huevón", "Vulgaridad"));
+        palabras.add(new PalabraProhibidaData("boludo", "Vulgaridad"));
+        palabras.add(new PalabraProhibidaData("pelotudo", "Vulgaridad"));
+        palabras.add(new PalabraProhibidaData("concha", "Vulgaridad"));
+        palabras.add(new PalabraProhibidaData("conchesumadre", "Insulto vulgar"));
+        palabras.add(new PalabraProhibidaData("ctm", "Acrónimo vulgar"));
+        palabras.add(new PalabraProhibidaData("hdp", "Acrónimo vulgar"));
+        palabras.add(new PalabraProhibidaData("hp", "Acrónimo vulgar"));
 
-        // ========== FRAUDE Y ESTAFAS ==========
-        palabras.add(new PalabraProhibidaData("phishing", "Intento de robo de información"));
-        palabras.add(new PalabraProhibidaData("piramidal", "Esquema piramidal ilegal"));
-
-
-        // ========== SEGURIDAD Y HACKEO ==========
-        palabras.add(new PalabraProhibidaData("hack", "Actividad de hackeo"));
-        palabras.add(new PalabraProhibidaData("hackear", "Intento de vulnerar seguridad"));
-        palabras.add(new PalabraProhibidaData("crackear", "Romper protecciones de software"));
-        palabras.add(new PalabraProhibidaData("keylogger", "Software malicioso"));
-        palabras.add(new PalabraProhibidaData("malware", "Software dañino"));
-        palabras.add(new PalabraProhibidaData("virus", "Software malicioso"));
-        palabras.add(new PalabraProhibidaData("ransomware", "Software de extorsión"));
-
-        // ========== DROGAS Y SUSTANCIAS ILEGALES ==========
-        palabras.add(new PalabraProhibidaData("drogas", "Sustancias ilegales"));
-        palabras.add(new PalabraProhibidaData("narcóticos", "Sustancias controladas"));
-        palabras.add(new PalabraProhibidaData("marihuana", "Venta ilegal de sustancias"));
-        palabras.add(new PalabraProhibidaData("cocaína", "Droga ilegal"));
-
-        // ========== ARMAS Y VIOLENCIA ==========
-        palabras.add(new PalabraProhibidaData("armas", "Comercio ilegal de armas"));
-        palabras.add(new PalabraProhibidaData("bomba", "Amenaza de violencia"));
-        palabras.add(new PalabraProhibidaData("explosivo", "Material peligroso"));
-        palabras.add(new PalabraProhibidaData("asesinar", "Incitación a la violencia"));
-        palabras.add(new PalabraProhibidaData("matar", "Amenaza grave"));
-
-        // ========== CONTENIDO PARA ADULTOS ==========
-        palabras.add(new PalabraProhibidaData("xxx", "Contenido explícito"));
+        // ========== CONTENIDO SEXUAL EXPLÍCITO ==========
         palabras.add(new PalabraProhibidaData("porno", "Contenido adulto"));
-        palabras.add(new PalabraProhibidaData("sexo", "Contenido inapropiado"));
-        palabras.add(new PalabraProhibidaData("desnudos", "Contenido no permitido"));
+        palabras.add(new PalabraProhibidaData("pornografía", "Contenido adulto"));
+        palabras.add(new PalabraProhibidaData("xxx", "Contenido explícito"));
+        palabras.add(new PalabraProhibidaData("sexo ", "Contenido adulto"));
+        palabras.add(new PalabraProhibidaData("desnudo", "Contenido adulto"));
+        palabras.add(new PalabraProhibidaData("desnuda", "Contenido adulto"));
+        palabras.add(new PalabraProhibidaData("tetas", "Vulgaridad sexual"));
+        palabras.add(new PalabraProhibidaData("polla", "Vulgaridad sexual"));
+        palabras.add(new PalabraProhibidaData("pene", "Contenido sexual"));
+        palabras.add(new PalabraProhibidaData("vagina", "Contenido sexual"));
+        palabras.add(new PalabraProhibidaData("coger", "Vulgaridad sexual"));
+        palabras.add(new PalabraProhibidaData("follar", "Vulgaridad sexual"));
+        palabras.add(new PalabraProhibidaData("culear", "Vulgaridad sexual"));
+        palabras.add(new PalabraProhibidaData("chingar", "Vulgaridad sexual"));
+        palabras.add(new PalabraProhibidaData("masturbar", "Contenido sexual explícito"));
+        palabras.add(new PalabraProhibidaData("masturbación", "Contenido sexual explícito"));
+        palabras.add(new PalabraProhibidaData("paja", "Vulgaridad sexual"));
+        palabras.add(new PalabraProhibidaData("corrida", "Contenido sexual explícito"));
+        palabras.add(new PalabraProhibidaData("orgasmo", "Contenido sexual explícito"));
+        palabras.add(new PalabraProhibidaData("eyacular", "Contenido sexual explícito"));
+        palabras.add(new PalabraProhibidaData("penetrar", "Contenido sexual explícito"));
+        palabras.add(new PalabraProhibidaData("penetración", "Contenido sexual explícito"));
+        palabras.add(new PalabraProhibidaData("puta desnuda", "Contenido explícito"));
+        palabras.add(new PalabraProhibidaData("escort", "Contenido adulto"));
+        palabras.add(new PalabraProhibidaData("prostituta", "Contenido adulto"));
+        palabras.add(new PalabraProhibidaData("webcam xxX", "Contenido adulto"));
+        palabras.add(new PalabraProhibidaData("onlyfans xxx", "Contenido adulto"));
 
-        // ========== DISCRIMINACIÓN Y ODIO ==========
-        palabras.add(new PalabraProhibidaData("racista", "Discurso de odio"));
-        palabras.add(new PalabraProhibidaData("discriminación", "Contenido discriminatorio"));
-        palabras.add(new PalabraProhibidaData("xenofobia", "Odio por nacionalidad"));
-        palabras.add(new PalabraProhibidaData("homofobia", "Discriminación LGBTQ+"));
-        palabras.add(new PalabraProhibidaData("nazi", "Ideología de odio"));
-
-        // ========== ACOSO Y BULLYING ==========
-        palabras.add(new PalabraProhibidaData("acoso", "Hostigamiento"));
-        palabras.add(new PalabraProhibidaData("bullying", "Intimidación"));
-        palabras.add(new PalabraProhibidaData("amenaza", "Contenido amenazante"));
-        palabras.add(new PalabraProhibidaData("stalkear", "Acoso persistente"));
-        palabras.add(new PalabraProhibidaData("doxxing", "Publicación de información privada"));
-
-        // ========== INFORMACIÓN PERSONAL ==========
-        palabras.add(new PalabraProhibidaData("contraseña", "Información de seguridad"));
-        palabras.add(new PalabraProhibidaData("cvv", "Datos de tarjeta bancaria"));
-
-        // ========== CONTENIDO ENGAÑOSO ==========
-        palabras.add(new PalabraProhibidaData("conspiración", "Teoría no verificada"));
-        palabras.add(new PalabraProhibidaData("cura milagrosa", "Afirmación médica falsa"));
-
-        // ========== ACTIVIDADES ILEGALES ==========
-        palabras.add(new PalabraProhibidaData("evasión fiscal", "Delito financiero"));
-        palabras.add(new PalabraProhibidaData("falsificación", "Producción de documentos falsos"));
-        palabras.add(new PalabraProhibidaData("contrabando", "Comercio ilegal"));
-        palabras.add(new PalabraProhibidaData("tráfico", "Actividad ilegal de transporte"));
-
-        // ========== MANIPULACIÓN DE PLATAFORMA ==========
-        palabras.add(new PalabraProhibidaData("comprar seguidores", "Manipulación de métricas"));
-        palabras.add(new PalabraProhibidaData("comprar likes", "Fraude de engagement"));
-        palabras.add(new PalabraProhibidaData("comprar reviews", "Opiniones falsas"));
-        palabras.add(new PalabraProhibidaData("likes automáticos", "Bot de interacciones"));
+        // ========== TÉRMINOS SEXUALES MUY EXPLÍCITOS ==========
+        palabras.add(new PalabraProhibidaData("gangbang", "Contenido sexual extremo"));
+        palabras.add(new PalabraProhibidaData("bukkake", "Contenido sexual extremo"));
+        palabras.add(new PalabraProhibidaData("creampie", "Contenido sexual explícito"));
+        palabras.add(new PalabraProhibidaData("deepthroat", "Contenido sexual explícito"));
+        palabras.add(new PalabraProhibidaData("facial", "Contenido sexual explícito"));
+        palabras.add(new PalabraProhibidaData("squirt", "Contenido sexual explícito"));
+        palabras.add(new PalabraProhibidaData("milf", "Contenido adulto"));
+        palabras.add(new PalabraProhibidaData("dildo", "Contenido adulto"));
+        palabras.add(new PalabraProhibidaData("vibrador", "Contenido adulto"));
 
         return palabras;
     }
