@@ -72,4 +72,12 @@ public class PublicacionServiceImpl implements PublicacionService {
                 .map(publicacionMapper::toDTO)
                 .toList();
     }
+
+    @Override
+    public List<PublicacionResponseDTO> listarTodas() {
+        return publicacionRepository.findAll()
+                .stream()
+                .map(publicacionMapper::toDTO)
+                .toList();
+    }
 }
