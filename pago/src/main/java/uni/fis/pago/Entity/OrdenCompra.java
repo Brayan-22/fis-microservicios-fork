@@ -28,6 +28,6 @@ public class OrdenCompra {
     private Date fecha;
     @Column(name = "id_pago") 
     private Integer idPago;
-    @Column(name = "id_orden_item")
+    @Column(name = "orden_item_id")
     private Integer idOrdenItem;
 }
