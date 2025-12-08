@@ -1,23 +1,23 @@
 package com.rolapet.Moderacion.Controller;
 
+import com.rolapet.Moderacion.Domain.dto.AgregarPalabraDTO;
 import com.rolapet.Moderacion.Domain.dto.ModeracionRequestDTO;
 import com.rolapet.Moderacion.Domain.dto.ModeracionResponseDTO;
 import com.rolapet.Moderacion.Domain.entity.PalabraProhibida;
 import com.rolapet.Moderacion.Service.ModeracionServiceInt;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-/**
- * Controlador REST para moderación de contenido en ESPAÑOL
- */
 @RestController
 @RequestMapping("/api/moderacion/espanol")
+@Validated
 @Slf4j
 public class ModeracionEspanolController {
 
@@ -28,62 +28,49 @@ public class ModeracionEspanolController {
         this.moderacionService = moderacionService;
     }
 
-    /**
-     * Valida contenido en español
-     */
     @PostMapping("/validar")
-    public ResponseEntity<ModeracionResponseDTO> validarContenido(@RequestBody ModeracionRequestDTO request) {
+    public ResponseEntity<ModeracionResponseDTO> validarContenido(
+            @Valid @RequestBody ModeracionRequestDTO request) {
+
         log.info("Validando contenido en español para usuario: {}", request.getUsuarioId());
         ModeracionResponseDTO response = moderacionService.validarContenido(request);
         return ResponseEntity.ok(response);
     }
-
     /**
      * Lista todas las palabras prohibidas en español
      */
     @GetMapping("/palabras")
     public ResponseEntity<List<PalabraProhibida>> listarPalabras() {
-        return ResponseEntity.ok(moderacionService.listarTodasLasPalabras());
+        List<PalabraProhibida> palabras = moderacionService.listarTodasLasPalabras();
+        return ResponseEntity.ok(palabras);
     }
 
     /**
-     * Lista solo palabras activas en español
-     */
-    @GetMapping("/palabras/activas")
-    public ResponseEntity<List<PalabraProhibida>> listarPalabrasActivas() {
-        return ResponseEntity.ok(moderacionService.listarPalabrasActivas());
-    }
-
-    /**
-     * Agrega una nueva palabra prohibida en español
+     * Agregar palabras
      */
     @PostMapping("/palabras")
     public ResponseEntity<PalabraProhibida> agregarPalabra(
-            @RequestParam String palabra,
-            @RequestParam String descripcion) {
-        try {
-            PalabraProhibida nueva = moderacionService.agregarPalabraProhibida(palabra, descripcion);
-            return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
-        } catch (IllegalArgumentException e) {
-            log.error("Error al agregar palabra: {}", e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
-    }
+            @Valid @RequestBody AgregarPalabraDTO request) {
 
-    /**
-     * Actualiza una palabra existente
-     */
+        log.info("Agregando palabra prohibida en español: '{}'", request.getPalabra());
+        PalabraProhibida nueva = moderacionService.agregarPalabraProhibida(
+                request.getPalabra(),
+                request.getDescripcion()
+        );
+        return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
+    }
     @PutMapping("/palabras/{id}")
     public ResponseEntity<PalabraProhibida> actualizarPalabra(
             @PathVariable Integer id,
-            @RequestParam String palabra,
-            @RequestParam String descripcion) {
-        try {
-            PalabraProhibida actualizada = moderacionService.actualizarPalabraProhibida(id, palabra, descripcion);
-            return ResponseEntity.ok(actualizada);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+            @Valid @RequestBody AgregarPalabraDTO request) {
+
+        log.info("Actualizando palabra con ID: {}", id);
+        PalabraProhibida actualizada = moderacionService.actualizarPalabraProhibida(
+                id,
+                request.getPalabra(),
+                request.getDescripcion()
+        );
+        return ResponseEntity.ok(actualizada);
     }
 
     /**
@@ -91,25 +78,20 @@ public class ModeracionEspanolController {
      */
     @DeleteMapping("/palabras/{id}")
     public ResponseEntity<Void> eliminarPalabra(@PathVariable Integer id) {
-        try {
-            moderacionService.eliminarPalabraProhibida(id);
-            return ResponseEntity.noContent().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        log.info("Eliminando palabra con ID: {}", id);
+        moderacionService.eliminarPalabraProhibida(id);
+        return ResponseEntity.noContent().build();
     }
+
 
     /**
      * Busca una palabra por ID
      */
     @GetMapping("/palabras/{id}")
     public ResponseEntity<PalabraProhibida> buscarPorId(@PathVariable Integer id) {
-        try {
-            PalabraProhibida palabra = moderacionService.buscarPorId(id);
-            return ResponseEntity.ok(palabra);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        log.info("Buscando palabra con ID: {}", id);
+        PalabraProhibida palabra = moderacionService.buscarPorId(id);
+        return ResponseEntity.ok(palabra);
     }
 
     /**
@@ -119,4 +101,10 @@ public class ModeracionEspanolController {
     public ResponseEntity<String> getIdioma() {
         return ResponseEntity.ok(moderacionService.getIdioma());
     }
+    @GetMapping("/health")
+    public ResponseEntity<String> health() {
+        return ResponseEntity.ok("Servicio de moderación en español operativo ✓");
+    }
+
+
 }

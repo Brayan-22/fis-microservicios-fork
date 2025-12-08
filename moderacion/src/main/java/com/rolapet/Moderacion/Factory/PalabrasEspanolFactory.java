@@ -12,8 +12,8 @@ import java.util.List;
 public class PalabrasEspanolFactory extends PalabrasMalSonantesFactory {
 
     @Override
-    protected List<PalabrasMalSonantesFactory.PalabraProhibidaData> crearPalabrasProhibidas() {
-        List<PalabrasMalSonantesFactory.PalabraProhibidaData> palabras = new ArrayList<>();
+    protected List<PalabraProhibidaData> crearPalabrasProhibidas() {
+        List<PalabraProhibidaData> palabras = new ArrayList<>();
 
         // ========== SPAM Y CONTENIDO NO DESEADO ==========
         palabras.add(new PalabraProhibidaData("spam", "Contenido repetitivo no deseado"));

@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ModeracionResponseDTO {
-    private Boolean aprobado;
+    private boolean aprobado;
     private String mensaje;
-    private Integer numeroInfracciones;
+    private int numeroInfracciones;
 }
 
