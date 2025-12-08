@@ -3,6 +3,7 @@ package uni.fis.contenido.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import uni.fis.contenido.dto.ApiResponse;
 import uni.fis.contenido.dto.LikeResponseDTO;
 import uni.fis.contenido.service.PublicacionLikeService;
 
@@ -16,19 +17,28 @@ public class PublicacionLikeController {
         this.likeService = likeService;
     }
 
-    @PostMapping("/dar")
-    public ResponseEntity<LikeResponseDTO> darLike(
-            @RequestParam Integer publicacion,
-            @RequestParam Integer usuario
+    @PostMapping("/{idPublicacion}/like/{idUsuario}")
+    public ResponseEntity<ApiResponse<LikeResponseDTO>> darLike(
+            @PathVariable Integer idPublicacion,
+            @PathVariable Integer idUsuario
     ) {
-        return ResponseEntity.ok(likeService.darLike(publicacion, usuario));
+        LikeResponseDTO dto = likeService.darLike(idPublicacion, idUsuario);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("Like registrado correctamente", dto)
+        );
     }
 
-    @PostMapping("/quitar")
-    public ResponseEntity<LikeResponseDTO> quitarLike(
-            @RequestParam Integer publicacion,
-            @RequestParam Integer usuario
+    @DeleteMapping("/{idPublicacion}/like/{idUsuario}")
+    public ResponseEntity<ApiResponse<LikeResponseDTO>> quitarLike(
+            @PathVariable Integer idPublicacion,
+            @PathVariable Integer idUsuario
     ) {
-        return ResponseEntity.ok(likeService.quitarLike(publicacion, usuario));
+        LikeResponseDTO dto = likeService.quitarLike(idPublicacion, idUsuario);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("Like eliminado correctamente", dto)
+        );
     }
+
 }

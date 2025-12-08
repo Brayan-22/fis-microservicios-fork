@@ -2,6 +2,8 @@ package uni.fis.contenido.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import uni.fis.contenido.dto.ApiResponse;
 import uni.fis.contenido.dto.CrearPublicacionDTO;
 import uni.fis.contenido.dto.PublicacionResponseDTO;
 import uni.fis.contenido.entity.PublicacionEntity;
@@ -20,18 +22,38 @@ public class PublicacionController {
     }
 
     @PostMapping
-    public ResponseEntity<PublicacionEntity> crear(@RequestBody CrearPublicacionDTO dto) {
-        return ResponseEntity.ok(publicacionService.crearPublicacion(dto));
+    public ResponseEntity<ApiResponse<PublicacionEntity>> crear(
+            @RequestBody CrearPublicacionDTO dto
+    ) {
+        PublicacionEntity pub = publicacionService.crearPublicacion(dto);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("Publicación creada correctamente", pub)
+        );
     }
 
     @GetMapping("/foro/{idForo}")
-    public ResponseEntity<List<PublicacionResponseDTO>> listarPorForo(@PathVariable Integer idForo) {
-        return ResponseEntity.ok(publicacionService.listarPorForo(idForo));
+    public ResponseEntity<ApiResponse<List<PublicacionResponseDTO>>> listarPorForo(
+            @PathVariable Integer idForo
+    ) {
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "Publicaciones listadas correctamente",
+                        publicacionService.listarPorForo(idForo)
+                )
+        );
     }
 
     @GetMapping("/usuario/{usuario}")
-    public ResponseEntity<List<PublicacionResponseDTO>> listarPorUsuario(@PathVariable String usuario) {
-        Integer usuarioInt = Integer.parseInt(usuario);
-        return ResponseEntity.ok(publicacionService.listarPorUsuario(usuarioInt));
+    public ResponseEntity<ApiResponse<List<PublicacionResponseDTO>>> listarPorUsuario(
+            @PathVariable Integer usuario
+    ) {
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "Publicaciones listadas correctamente",
+                        publicacionService.listarPorUsuario(usuario)
+                )
+        );
     }
+
 }

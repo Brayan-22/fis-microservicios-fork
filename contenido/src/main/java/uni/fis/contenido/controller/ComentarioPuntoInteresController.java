@@ -2,6 +2,8 @@ package uni.fis.contenido.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import uni.fis.contenido.dto.ApiResponse;
 import uni.fis.contenido.dto.ComentarioPuntoInteresDTO;
 import uni.fis.contenido.service.ComentarioPuntoInteresService;
 
@@ -18,17 +20,23 @@ public class ComentarioPuntoInteresController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ComentarioPuntoInteresDTO>> getAll() {
-        return ResponseEntity.ok(comentarioService.findAll());
+    public ResponseEntity<ApiResponse<List<ComentarioPuntoInteresDTO>>> getAll() {
+        return ResponseEntity.ok(
+                ApiResponse.success("Listado de comentarios obtenido correctamente", comentarioService.findAll())
+        );
     }
 
     @GetMapping("/punto/{idPunto}")
-    public ResponseEntity<List<ComentarioPuntoInteresDTO>> getByPunto(@PathVariable Integer idPunto) {
-        return ResponseEntity.ok(comentarioService.findByPunto(idPunto));
+    public ResponseEntity<ApiResponse<List<ComentarioPuntoInteresDTO>>> getByPunto(@PathVariable Integer idPunto) {
+        return ResponseEntity.ok(
+                ApiResponse.success("Comentarios del punto obtenidos correctamente", comentarioService.findByPunto(idPunto))
+        );
     }
 
     @PostMapping
-    public ResponseEntity<ComentarioPuntoInteresDTO> create(@RequestBody ComentarioPuntoInteresDTO dto) {
-        return ResponseEntity.ok(comentarioService.create(dto));
+    public ResponseEntity<ApiResponse<ComentarioPuntoInteresDTO>> create(@RequestBody ComentarioPuntoInteresDTO dto) {
+        return ResponseEntity.ok(
+                ApiResponse.success("Comentario registrado correctamente", comentarioService.create(dto))
+        );
     }
 }
