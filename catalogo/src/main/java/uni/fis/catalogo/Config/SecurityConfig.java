@@ -10,6 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
+import uni.fis.catalogo.Security.CatalogoOwnershipFilter;
 import uni.fis.catalogo.Security.JwtAuthenticationFilter;
 
 @Configuration
@@ -18,6 +19,7 @@ import uni.fis.catalogo.Security.JwtAuthenticationFilter;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CatalogoOwnershipFilter catalogoOwnershipFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -60,7 +62,8 @@ public class SecurityConfig {
                     .authenticated()
             )
             
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterAfter(catalogoOwnershipFilter, JwtAuthenticationFilter.class);
 
         return http.build();
     }
