@@ -31,6 +31,4 @@ public class OrdenItem{
     private BigDecimal valor_unitario;
     @Column()
     private BigDecimal subtotal;
-    @Column(name = "id_orden_compra")
-    private Integer idOrdenCompra;
 }
