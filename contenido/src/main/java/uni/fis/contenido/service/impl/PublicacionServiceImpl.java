@@ -52,7 +52,6 @@ public class PublicacionServiceImpl implements PublicacionService {
         pub.setContenido(contenido);
         pub.setMultimedia(dto.getIdMultimedia());
         pub.setForo(dto.getIdForo());
-        pub.setLikes(0);
 
         return publicacionRepository.save(pub);
     }
@@ -69,6 +68,14 @@ public class PublicacionServiceImpl implements PublicacionService {
     public List<PublicacionResponseDTO> listarPorUsuario(Integer usuario) {
         return publicacionRepository.findAll().stream()
                 .filter(p -> p.getContenido().getIdAutor().equals(usuario))
+                .map(publicacionMapper::toDTO)
+                .toList();
+    }
+
+    @Override
+    public List<PublicacionResponseDTO> listarTodas() {
+        return publicacionRepository.findAll()
+                .stream()
                 .map(publicacionMapper::toDTO)
                 .toList();
     }

@@ -10,4 +10,5 @@ public interface PublicacionService {
     PublicacionEntity crearPublicacion(CrearPublicacionDTO dto);
     List<PublicacionResponseDTO> listarPorForo(Integer idForo);
     List<PublicacionResponseDTO> listarPorUsuario(Integer usuario);
+    List<PublicacionResponseDTO> listarTodas();
 }

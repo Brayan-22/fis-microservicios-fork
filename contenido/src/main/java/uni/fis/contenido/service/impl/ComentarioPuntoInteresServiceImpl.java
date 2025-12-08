@@ -14,6 +14,7 @@ import uni.fis.contenido.exception.ComentarioNoEncontradoException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Service
 public class ComentarioPuntoInteresServiceImpl implements ComentarioPuntoInteresService {
 
@@ -22,8 +23,7 @@ public class ComentarioPuntoInteresServiceImpl implements ComentarioPuntoInteres
 
     public ComentarioPuntoInteresServiceImpl(
             ComentarioPuntoInteresRepository comentarioRepo,
-            ComentarioPuntoInteresMapper mapper,
-            ContenidoRepository contenidoRepository
+            ComentarioPuntoInteresMapper mapper
     ) {
         this.comentarioRepo = comentarioRepo;
         this.mapper = mapper;
@@ -37,7 +37,7 @@ public class ComentarioPuntoInteresServiceImpl implements ComentarioPuntoInteres
             throw new ComentarioNoEncontradoException("No hay comentarios registrados");
         }
 
-        return lista.stream().map(mapper::toDTO).collect(Collectors.toList());
+        return lista.stream().map(mapper::toDTO).toList();
     }
 
     @Override
@@ -50,9 +50,8 @@ public class ComentarioPuntoInteresServiceImpl implements ComentarioPuntoInteres
         return comentarioRepo.findByIdPunto(idPunto)
                 .stream()
                 .map(mapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
-
 
     @Override
     public ComentarioPuntoInteresDTO create(ComentarioPuntoInteresDTO comentarioDTO) {
@@ -62,7 +61,7 @@ public class ComentarioPuntoInteresServiceImpl implements ComentarioPuntoInteres
         }
 
         if (comentarioDTO.getIdComentario() == null) {
-            throw new ContenidoNoValidoException("Debe enviar el idContenido para asociar el comentario");
+            throw new ContenidoNoValidoException("Debe enviar el idComentario para asociarlo");
         }
 
         ComentarioPuntoInteresEntity entity = mapper.toEntity(comentarioDTO);
@@ -70,6 +69,5 @@ public class ComentarioPuntoInteresServiceImpl implements ComentarioPuntoInteres
 
         return mapper.toDTO(saved);
     }
-
 
 }
