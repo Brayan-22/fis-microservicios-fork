@@ -38,14 +38,12 @@ public class ComentarioServiceImpl implements ComentarioService {
             throw new ContenidoNoValidoException("Debe especificarse el usuario que crea el comentario.");
         }
 
-        // Crear contenido asociado al comentario
         ContenidoEntity contenido =
                 contenidoService.crearContenido(dto.getTextoContenido(), dto.getUsuario());
 
         ComentarioEntity comentario = new ComentarioEntity();
         comentario.setContenido(contenido);
 
-        // Establecer comentario padre (opcional)
         if (dto.getIdComentarioPadre() != null) {
             comentario.setComentarioPadre(
                     comentarioRepository.findById(dto.getIdComentarioPadre())
@@ -55,7 +53,6 @@ public class ComentarioServiceImpl implements ComentarioService {
             );
         }
 
-        // Establecer publicación (opcional)
         if (dto.getIdPublicacion() != null) {
             comentario.setPublicacion(
                     publicacionRepository.findById(dto.getIdPublicacion())
@@ -79,8 +76,7 @@ public class ComentarioServiceImpl implements ComentarioService {
     @Override
     public List<ComentarioResponseDTO> listarPorPublicacion(Integer idPublicacion) {
         PublicacionEntity pub = publicacionRepository.findById(idPublicacion)
-        .orElseThrow(() -> new PublicacionNoEncontradaException("Publicación no encontrada"));
-
+                .orElseThrow(() -> new PublicacionNoEncontradaException("Publicación no encontrada"));
 
         return comentarioRepository.findByPublicacion(pub).stream()
                 .map(this::mapToDTO)

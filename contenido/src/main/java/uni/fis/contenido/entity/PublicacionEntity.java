@@ -25,13 +25,10 @@ public class PublicacionEntity {
     @JoinColumn(name = "contenido_id")
     private ContenidoEntity contenido;
 
-    @Column(name = "multimedia_id")
+    @Column(name = "id_img")
     private Integer multimedia;
 
     @Column(name = "foro_id")
     private Integer foro;
-
-    @Column(name = "likes")
-    private int likes;
 
 }

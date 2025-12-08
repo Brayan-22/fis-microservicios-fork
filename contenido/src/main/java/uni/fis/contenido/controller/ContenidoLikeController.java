@@ -5,15 +5,15 @@ import org.springframework.web.bind.annotation.*;
 
 import uni.fis.contenido.dto.ApiResponse;
 import uni.fis.contenido.dto.LikeResponseDTO;
-import uni.fis.contenido.service.PublicacionLikeService;
+import uni.fis.contenido.service.ContenidoLikeService;
 
 @RestController
 @RequestMapping("/api/v1/publicaciones/likes")
-public class PublicacionLikeController {
+public class ContenidoLikeController {
 
-    private final PublicacionLikeService likeService;
+    private final ContenidoLikeService likeService;
 
-    public PublicacionLikeController(PublicacionLikeService likeService) {
+    public ContenidoLikeController(ContenidoLikeService likeService) {
         this.likeService = likeService;
     }
 

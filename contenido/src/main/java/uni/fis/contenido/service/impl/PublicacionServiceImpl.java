@@ -52,7 +52,6 @@ public class PublicacionServiceImpl implements PublicacionService {
         pub.setContenido(contenido);
         pub.setMultimedia(dto.getIdMultimedia());
         pub.setForo(dto.getIdForo());
-        pub.setLikes(0);
 
         return publicacionRepository.save(pub);
     }

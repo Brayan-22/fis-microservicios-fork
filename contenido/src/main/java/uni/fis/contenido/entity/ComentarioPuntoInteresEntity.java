@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 import lombok.Data;
 
 
@@ -15,13 +16,14 @@ import lombok.Data;
 @Table(name = "puntointerescomentario")
 public class ComentarioPuntoInteresEntity {
     @Id 
+    @Column(name = "puntocom_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "contenido_id")
+    @JoinColumn(name = "comentario_id")
     private ComentarioEntity comentario;
 
-
+    @Column(name = "punto_id")
     private Integer idPunto;
 }
