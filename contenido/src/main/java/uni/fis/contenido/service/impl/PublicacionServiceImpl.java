@@ -25,8 +25,7 @@ public class PublicacionServiceImpl implements PublicacionService {
     public PublicacionServiceImpl(
             PublicacionRepository publicacionRepository,
             ContenidoService contenidoService,
-            PublicacionMapper publicacionMapper
-    ) {
+            PublicacionMapper publicacionMapper) {
         this.publicacionRepository = publicacionRepository;
         this.contenidoService = contenidoService;
         this.publicacionMapper = publicacionMapper;
@@ -44,8 +43,7 @@ public class PublicacionServiceImpl implements PublicacionService {
         }
 
         // Crear contenido relacionado
-        ContenidoEntity contenido =
-                contenidoService.crearContenido(dto.getTextoContenido(), dto.getUsuario());
+        ContenidoEntity contenido = contenidoService.crearContenido(dto.getTextoContenido(), dto.getUsuario());
 
         PublicacionEntity pub = new PublicacionEntity();
         pub.setTitulo(dto.getTitulo());
@@ -55,6 +53,14 @@ public class PublicacionServiceImpl implements PublicacionService {
         pub.setLikes(0);
 
         return publicacionRepository.save(pub);
+    }
+
+    @Override
+    public List<PublicacionResponseDTO> listarTodo() {
+        return publicacionRepository.findAll()
+                .stream()
+                .map(publicacionMapper::toDTO)
+                .toList();
     }
 
     @Override

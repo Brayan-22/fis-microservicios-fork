@@ -15,45 +15,45 @@ import java.util.List;
 @RequestMapping("/api/v1/publicaciones")
 public class PublicacionController {
 
-    private final PublicacionService publicacionService;
+        private final PublicacionService publicacionService;
 
-    public PublicacionController(PublicacionService publicacionService) {
-        this.publicacionService = publicacionService;
-    }
+        public PublicacionController(PublicacionService publicacionService) {
+                this.publicacionService = publicacionService;
+        }
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<PublicacionEntity>> crear(
-            @RequestBody CrearPublicacionDTO dto
-    ) {
-        PublicacionEntity pub = publicacionService.crearPublicacion(dto);
+        @PostMapping
+        public ResponseEntity<ApiResponse<PublicacionEntity>> crear(
+                        @RequestBody CrearPublicacionDTO dto) {
+                PublicacionEntity pub = publicacionService.crearPublicacion(dto);
 
-        return ResponseEntity.ok(
-                ApiResponse.success("Publicación creada correctamente", pub)
-        );
-    }
+                return ResponseEntity.ok(
+                                ApiResponse.success("Publicación creada correctamente", pub));
+        }
 
-    @GetMapping("/foro/{idForo}")
-    public ResponseEntity<ApiResponse<List<PublicacionResponseDTO>>> listarPorForo(
-            @PathVariable Integer idForo
-    ) {
-        return ResponseEntity.ok(
-                ApiResponse.success(
-                        "Publicaciones listadas correctamente",
-                        publicacionService.listarPorForo(idForo)
-                )
-        );
-    }
+        @GetMapping("/foro/{idForo}")
+        public ResponseEntity<ApiResponse<List<PublicacionResponseDTO>>> listarPorForo(
+                        @PathVariable Integer idForo) {
+                return ResponseEntity.ok(
+                                ApiResponse.success(
+                                                "Publicaciones listadas correctamente",
+                                                publicacionService.listarPorForo(idForo)));
+        }
 
-    @GetMapping("/usuario/{usuario}")
-    public ResponseEntity<ApiResponse<List<PublicacionResponseDTO>>> listarPorUsuario(
-            @PathVariable Integer usuario
-    ) {
-        return ResponseEntity.ok(
-                ApiResponse.success(
-                        "Publicaciones listadas correctamente",
-                        publicacionService.listarPorUsuario(usuario)
-                )
-        );
-    }
+        @GetMapping("/usuario/{usuario}")
+        public ResponseEntity<ApiResponse<List<PublicacionResponseDTO>>> listarPorUsuario(
+                        @PathVariable Integer usuario) {
+                return ResponseEntity.ok(
+                                ApiResponse.success(
+                                                "Publicaciones listadas correctamente",
+                                                publicacionService.listarPorUsuario(usuario)));
+        }
+
+        @GetMapping()
+        public ResponseEntity<ApiResponse<List<PublicacionResponseDTO>>> listarTodo() {
+                return ResponseEntity.ok(
+                                ApiResponse.success(
+                                                "Publicaciones listadas correctamente",
+                                                publicacionService.listarTodo()));
+        }
 
 }

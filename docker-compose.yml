@@ -105,6 +105,40 @@ services:
       retries: 3
       start_period: 30s
 
+  foro:
+    <<: *service-defaults
+    build: ./foro
+    container_name: fis-foro
+    environment:
+      SERVER_PORT: 8085
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
+    healthcheck:
+      test: [ "CMD", "wget", "-qO-", "http://localhost:8085/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # multimedia:
+  #   <<: *service-defaults
+  #   build: ./multimedia
+  #   container_name: fis-multimedia
+  #   environment:
+  #     SERVER_PORT: 8089
+  #     DATABASE_URL: ${DATABASE_URL}
+  #     DATABASE_USERNAME: ${DATABASE_USERNAME}
+  #     DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+  #     SECRET_KEY: ${SECRET_KEY}
+  #   healthcheck:
+  #     test: [ "CMD", "wget", "-qO-", "http://localhost:8089/actuator/health" ]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 30s
+
   # ---------------------
   #     NGINX — EL ÚNICO expuesto
   # ---------------------
@@ -126,6 +160,10 @@ services:
         condition: service_healthy
       contenido:
         condition: service_healthy
+      foro:
+        condition: service_healthy
+      # multimedia:
+      #   condition: service_healthy
     networks:
       - fis-network
 
