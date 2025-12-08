@@ -28,34 +28,6 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             
             .authorizeHttpRequests(auth -> auth
-                // Consultar catálogo por ID
-                .requestMatchers("GET", "/api/catalogo/{id}")
-                    .permitAll()
-                
-                // Listar productos de un catálogo
-                .requestMatchers("GET", "/api/catalogo/{catalogoId}/listaProductos")
-                    .permitAll()
-                
-                // Listar servicios de un catálogo
-                .requestMatchers("GET", "/api/catalogo/{catalogoId}/listaServicios")
-                    .permitAll()
-                
-                // Obtener producto específico
-                .requestMatchers("GET", "/api/catalogo/{idCatalogo}/producto/{id}")
-                    .permitAll()
-                
-                // Obtener servicio específico
-                .requestMatchers("GET", "/api/catalogo/{idCatalogo}/servicio/{id}")
-                    .permitAll()
-                
-                // Calificar producto
-                .requestMatchers("POST", "/api/catalogo/producto/{id}/calificar")
-                    .permitAll()
-                
-                // Calificar servicio
-                .requestMatchers("POST", "/api/catalogo/servicio/{id}/calificar")
-                    .permitAll()
-                
                 // Crear catálogo
                 .requestMatchers("POST", "/api/catalogo/crear")
                     .hasRole("PROVEEDOR")
@@ -80,9 +52,6 @@ public class SecurityConfig {
                 .requestMatchers("DELETE", "/api/catalogo/{idCatalogo}/servicio/{id}/eliminar")
                     .hasRole("PROVEEDOR")
                 
-                // Cualquier otra petición requiere autenticación
-                .anyRequest()
-                    .authenticated()
             )
             
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
