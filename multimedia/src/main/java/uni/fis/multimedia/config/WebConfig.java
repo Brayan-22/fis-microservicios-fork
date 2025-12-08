@@ -21,10 +21,9 @@ public class WebConfig implements WebMvcConfigurer {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") // aplica a toda la app multimedia
-                        .allowedOrigins(
-                                "*"
-                        )
+
+                registry.addMapping("/**")
+                        .allowedOriginPatterns("*")  // permite cualquier origen
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
