@@ -1,7 +1,5 @@
 package uni.fis.pago.Controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import uni.fis.pago.Model.OrdenCompraDTO.OrdenCompraRequest;
 import uni.fis.pago.Model.OrdenCompraDTO.OrdenCompraResponse;
 import uni.fis.pago.Model.OrdenItemDTO.OrdenItemRequest;
 import uni.fis.pago.Model.OrdenItemDTO.OrdenItemResponse;
@@ -43,8 +40,8 @@ public class PagoController{
         return new ResponseEntity<>(pago, HttpStatus.OK);
     }
     @PostMapping("/crearOrdenCompra")
-    public ResponseEntity<Integer> crearEntityOrdenCompra(@RequestBody OrdenCompraRequest ordenCompraRequest){
-        Integer ordenCompraId = ordenCompraService.crearOrdenCompra(ordenCompraRequest);
+    public ResponseEntity<Integer> crearEntityOrdenCompra(@RequestBody Integer idPago){
+        Integer ordenCompraId = ordenCompraService.crearOrdenCompra(idPago);
         return new ResponseEntity<>(ordenCompraId, HttpStatus.CREATED);
     }
     @GetMapping("/ObtenerOrdenCompra/{id}")
@@ -61,11 +58,6 @@ public class PagoController{
     public ResponseEntity<OrdenItemResponse> obtenerOrdenItemPorId(@PathVariable Integer idOrdenItem){
         OrdenItemResponse response = ordenItemService.consultarOrdenItem(idOrdenItem);
         return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-    @GetMapping("/ObtenerOrdenCompra/{idOrdenCompra}/OrdenesItems")
-    public ResponseEntity<List<OrdenItemResponse>> obtenerOrdenesItemsPorIdOrdenCompra(@PathVariable Integer idOrdenCompra){
-        List<OrdenItemResponse> ordenesDeItems = ordenCompraService.consultarOrdenesItems(idOrdenCompra);
-        return new  ResponseEntity<>(ordenesDeItems, HttpStatus.OK);
     }
     @DeleteMapping("/EliminarOrdenCompra/{idOrdenCompra}")
     public ResponseEntity<String> eliminarOrdenCompraPorId(@PathVariable Integer idOrdenCompra){

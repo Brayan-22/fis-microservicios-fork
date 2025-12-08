@@ -1,20 +1,14 @@
 package uni.fis.pago.Service.Imp;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.log4j.Log4j2;
 import uni.fis.pago.Entity.OrdenCompra;
-import uni.fis.pago.Entity.OrdenItem;
 import uni.fis.pago.Exceptions.Exceptions;
-import uni.fis.pago.Model.OrdenCompraDTO.OrdenCompraRequest;
 import uni.fis.pago.Model.OrdenCompraDTO.OrdenCompraResponse;
-import uni.fis.pago.Model.OrdenItemDTO.OrdenItemResponse;
 import uni.fis.pago.Repository.OrdenCompraRepository;
 import uni.fis.pago.Repository.OrdenItemRepository;
 import uni.fis.pago.Service.Interfaces.OrdenCompraService;
@@ -29,11 +23,10 @@ public class OrdenCompraServiceImp implements OrdenCompraService{
     OrdenItemRepository ordenItemRepository;
 
     @Override
-    public Integer crearOrdenCompra(OrdenCompraRequest ordenCompraRequest){
+    public Integer crearOrdenCompra(Integer idPago){
         OrdenCompra ordenCompra = OrdenCompra.builder()
                                     .fecha(new Date())
-                                    .monto_total(ordenCompraRequest.getMonto_total())
-                                    .idPago(ordenCompraRequest.getId_pago())
+                                    .idPago(idPago)
                                 .build();
         log.info("Procesando la información de la orden de compra");
         ordenCompraRepository.save(ordenCompra);
@@ -57,32 +50,9 @@ public class OrdenCompraServiceImp implements OrdenCompraService{
         OrdenCompraResponse response = OrdenCompraResponse.builder()
                                         .id(ordenCompra.getId())
                                         .fecha(ordenCompra.getFecha())
-                                        .monto_total(ordenCompra.getMonto_total())
                                         .id_pago(ordenCompra.getIdPago())
                                     .build();   
         log.info("Orden de compra encontrada exitosamente!");                 
-        return response;
-    }
-    @Override
-    public List<OrdenItemResponse> consultarOrdenesItems(Integer idOrdenCompra){
-        log.info("Buscando ordenes de items que pertenecen a la orden de compra");
-        if (!ordenItemRepository.existsByIdOrdenCompra(idOrdenCompra)) {
-            throw new Exceptions("No se han encontrado ordenes de item relacionadas con la orden de compra","ORDEN_ITEM_NOT_FOUND");
-        }    
-        List<OrdenItem> ordenesItems = ordenItemRepository.findByIdOrdenCompra(idOrdenCompra);
-        List<OrdenItemResponse> response = new ArrayList<>();
-        for(OrdenItem ordenItem : ordenesItems){
-            OrdenItemResponse ordenItemResponse = OrdenItemResponse.builder()
-                                            .id(ordenItem.getId())
-                                            .id_item(ordenItem.getIdItem())
-                                            .cantidad(ordenItem.getCantidad())
-                                            .valor_unitario(ordenItem.getValor_unitario())
-                                            .id_orden_compra(ordenItem.getIdOrdenCompra())
-                                            .subtotal(ordenItem.getSubtotal())
-                                            .build();
-            response.add(ordenItemResponse);
-        }
-        log.info("Items encontrados exitosamente!");
         return response;
     }
 }

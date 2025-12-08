@@ -8,4 +8,5 @@ import uni.fis.pago.Entity.OrdenCompra;
 @Repository
 public interface OrdenCompraRepository extends JpaRepository<OrdenCompra, Integer> {
     OrdenCompra findByIdPago(Integer idPago);
+    OrdenCompra findByIdOrdenItem(Integer idOrdenItem);
 }
