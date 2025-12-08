@@ -1,6 +1,7 @@
 package uni.fis.vehiculo.configuration;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 import uni.fis.vehiculo.configuration.auth.JwtAuthenticationFilter;
 
 @Configuration
@@ -17,6 +19,7 @@ import uni.fis.vehiculo.configuration.auth.JwtAuthenticationFilter;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
+    private final @Qualifier(value = "customCorsConfigurationSource") CorsConfigurationSource corsConfig;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     // FilterChain para API con JWT
@@ -26,6 +29,7 @@ public class WebSecurityConfig {
         http
                 .securityMatcher("/api/**")  // ← Solo endpoints /api/**
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfig))
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().authenticated()  // Todos los /api/** requieren autenticación
