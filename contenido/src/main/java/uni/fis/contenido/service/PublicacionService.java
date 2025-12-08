@@ -12,5 +12,5 @@ public interface PublicacionService {
 
     List<PublicacionResponseDTO> listarPorUsuario(Integer usuario);
 
-    List<PublicacionResponseDTO> listarTodo();
+    List<PublicacionResponseDTO> listarTodas();
 }

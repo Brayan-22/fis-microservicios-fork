@@ -56,4 +56,14 @@ public class PublicacionController {
                                                 publicacionService.listarTodo()));
         }
 
+    @GetMapping()
+    public ResponseEntity<ApiResponse<List<PublicacionResponseDTO>>> listarTodas() {
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "Publicaciones listadas correctamente",
+                        publicacionService.listarTodas()
+                )
+        );
+    }
+
 }
