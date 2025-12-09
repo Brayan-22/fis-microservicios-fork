@@ -122,23 +122,55 @@ services:
       retries: 3
       start_period: 30s
 
-  # multimedia:
+  multimedia:
+    <<: *service-defaults
+    build: ./multimedia
+    container_name: fis-multimedia
+    environment:
+      SERVER_PORT: 8089
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
+    healthcheck:
+      test: [ "CMD", "wget", "-qO-", "http://localhost:8089/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  geo:
+    <<: *service-defaults
+    build: ./geo
+    container_name: fis-geo
+    environment:
+      SERVER_PORT: 8086
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
+    healthcheck:
+      test: [ "CMD", "wget", "-qO-", "http://localhost:8086/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+  # moderacion:
   #   <<: *service-defaults
-  #   build: ./multimedia
-  #   container_name: fis-multimedia
+  #   build: ./moderacion
+  #   container_name: fis-moderacion
   #   environment:
-  #     SERVER_PORT: 8089
+  #     SERVER_PORT: 8088
   #     DATABASE_URL: ${DATABASE_URL}
   #     DATABASE_USERNAME: ${DATABASE_USERNAME}
   #     DATABASE_PASSWORD: ${DATABASE_PASSWORD}
   #     SECRET_KEY: ${SECRET_KEY}
   #   healthcheck:
-  #     test: [ "CMD", "wget", "-qO-", "http://localhost:8089/actuator/health" ]
+  #     test: [ "CMD", "wget", "-qO-", "http://localhost:8088/actuator/health" ]
   #     interval: 30s
   #     timeout: 10s
   #     retries: 3
   #     start_period: 30s
-
   # ---------------------
   #     NGINX — EL ÚNICO expuesto
   # ---------------------
@@ -162,8 +194,12 @@ services:
         condition: service_healthy
       foro:
         condition: service_healthy
-      # multimedia:
+      geo:
+        condition: service_healthy
+      # moderacion:
       #   condition: service_healthy
+      multimedia:
+        condition: service_healthy
     networks:
       - fis-network
 
