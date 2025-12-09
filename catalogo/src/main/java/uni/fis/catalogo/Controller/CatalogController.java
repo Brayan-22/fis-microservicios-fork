@@ -128,4 +128,9 @@ public class CatalogController {
         itemService.calificarServicio(id, calificacion);
         return new ResponseEntity<>("Servicio calificado exitosamente", HttpStatus.OK);
     }
+    @GetMapping("/catalogos")
+    public ResponseEntity<CatalogoResponse[]> obtenerTodosLosCatalogos() {
+        CatalogoResponse[] catalogos = catalogoService.obtenerTodosLosCatalogos();
+        return new ResponseEntity<>(catalogos, HttpStatus.OK);
+    }
 }
