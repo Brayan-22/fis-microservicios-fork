@@ -66,12 +66,12 @@ services:
     environment:
       SERVER_PORT: 8083
 
-  filtrocontenido:
-    <<: *microservice
-    build: ./filtrocontenido
-    container_name: fis-filtrocontenido
-    environment:
-      SERVER_PORT: 8084
+  # filtrocontenido:
+  #   <<: *microservice
+  #   build: ./filtrocontenido
+  #   container_name: fis-filtrocontenido
+  #   environment:
+  #     SERVER_PORT: 8084
 
   foro:
     <<: *microservice
@@ -87,19 +87,19 @@ services:
     environment:
       SERVER_PORT: 8086
 
-  mensajeria:
-    <<: *microservice
-    build: ./mensajeria
-    container_name: fis-mensajeria
-    environment:
-      SERVER_PORT: 8087
+  # mensajeria:
+  #   <<: *microservice
+  #   build: ./mensajeria
+  #   container_name: fis-mensajeria
+  #   environment:
+  #     SERVER_PORT: 8087
 
-  moderacion:
-    <<: *microservice
-    build: ./moderacion
-    container_name: fis-moderacion
-    environment:
-      SERVER_PORT: 8088
+  # moderacion:
+  #   <<: *microservice
+  #   build: ./moderacion
+  #   container_name: fis-moderacion
+  #   environment:
+  #     SERVER_PORT: 8088
 
   multimedia:
     <<: *microservice
@@ -108,26 +108,26 @@ services:
     environment:
       SERVER_PORT: 8089
 
-  noticia:
-    <<: *microservice
-    build: ./noticia
-    container_name: fis-noticia
-    environment:
-      SERVER_PORT: 8090
+  # noticia:
+  #   <<: *microservice
+  #   build: ./noticia
+  #   container_name: fis-noticia
+  #   environment:
+  #     SERVER_PORT: 8090
 
-  pago:
-    <<: *microservice
-    build: ./pago
-    container_name: fis-pago
-    environment:
-      SERVER_PORT: 8091
+  # pago:
+  #   <<: *microservice
+  #   build: ./pago
+  #   container_name: fis-pago
+  #   environment:
+  #     SERVER_PORT: 8091
 
-  proveedor:
-    <<: *microservice
-    build: ./proveedor
-    container_name: fis-proveedor
-    environment:
-      SERVER_PORT: 8092
+  # proveedor:
+  #   <<: *microservice
+  #   build: ./proveedor
+  #   container_name: fis-proveedor
+  #   environment:
+  #     SERVER_PORT: 8092
 
   usuario:
     <<: *microservice
@@ -156,3 +156,13 @@ services:
     restart: always
     networks:
       - fis-network
+    depends_on:
+      - auth
+      - catalogo
+      - contenido
+      - email
+      - foro
+      - geo
+      - multimedia
+      - usuario
+      - vehiculo
