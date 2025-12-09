@@ -166,3 +166,87 @@ services:
       - multimedia
       - usuario
       - vehiculo
+
+  # ------------
+  # Apartado de contenido (ClamAV)
+  #------------
+
+  clamav:
+    image: clamav/clamav:latest
+    container_name: clamav
+    volumes:
+      - ./clamav/freshclam.conf:/etc/clamav/freshclam.conf:ro
+      - clamav-data:/var/lib/clamav
+    expose:
+      - "3310"
+    restart: always
+    networks:
+      - fis-network
+
+  # ---------------------
+  # Observabilidad
+  # ---------------------
+
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:latest
+    container_name: fis-nginx-exporter
+    command:
+      - -nginx.scrape-uri
+      - http://nginx:80/stub_status
+    networks:
+      - fis-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: fis-prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - fis-network
+
+  loki:
+    image: grafana/loki:latest
+    container_name: fis-loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki-config.yaml:/etc/loki/local-config.yaml
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - fis-network
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: fis-promtail
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ./promtail-config.yaml:/etc/promtail/config.yml
+    command: -config.file=/etc/promtail/config.yml
+    depends_on:
+      - loki
+    networks:
+      - fis-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: fis-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana-dashboards:/var/lib/grafana/dashboards
+    depends_on:
+      - prometheus
+      - loki
+    networks:
+      - fis-network
+
+volumes:
+  clamav-data:
+
+

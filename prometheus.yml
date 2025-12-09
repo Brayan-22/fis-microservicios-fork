@@ -1,0 +1,113 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'fis-microservices'
+
+# Configuración de alertas (opcional)
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets: ['alertmanager:9093']
+
+scrape_configs:
+  # Métricas de Nginx (ya lo tenías)
+  - job_name: 'nginx-exporter'
+    static_configs:
+      - targets: ['nginx-exporter:9113']
+        labels:
+          service: 'nginx'
+          layer: 'gateway'
+
+  # ===================================
+  # Métricas de Spring Boot
+  # ===================================
+  
+  - job_name: 'auth-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['auth:8080']
+        labels:
+          service: 'auth'
+          layer: 'backend'
+          team: 'security'
+
+  - job_name: 'usuario-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['usuario:8093']
+        labels:
+          service: 'usuario'
+          layer: 'backend'
+          team: 'core'
+
+  - job_name: 'email-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['email:8083']
+        labels:
+          service: 'email'
+          layer: 'backend'
+          team: 'notifications'
+
+  - job_name: 'vehiculo-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['vehiculo:8094']
+        labels:
+          service: 'vehiculo'
+          layer: 'backend'
+          team: 'core'
+
+  - job_name: 'catalogo-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['catalogo:8081']
+        labels:
+          service: 'catalogo'
+          layer: 'backend'
+          team: 'core'
+
+  - job_name: 'contenido-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['contenido:8082']
+        labels:
+          service: 'contenido'
+          layer: 'backend'
+          team: 'core'
+
+  - job_name: 'foro-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['foro:8085']
+        labels:
+          service: 'foro'
+          layer: 'backend'
+          team: 'core'
+
+  - job_name: 'geo-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['geo:8086']
+        labels:
+          service: 'geo'
+          layer: 'backend'
+          team: 'core'
+
+  - job_name: 'multimedia-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['multimedia:8089']
+        labels:
+          service: 'multimedia'
+          layer: 'backend'
+          team: 'core'
+
+  # Métricas del propio Prometheus
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+        labels:
+          service: 'prometheus'
+          layer: 'monitoring'
