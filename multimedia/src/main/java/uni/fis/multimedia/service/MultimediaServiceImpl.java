@@ -25,10 +25,13 @@ import java.util.Set;
 public class MultimediaServiceImpl implements MultimediaService {
 
     private static final Logger logger = LoggerFactory.getLogger(MultimediaServiceImpl.class);
-    
+
     private final MultimediaRepository multimediaRepository;
 
     private static final String UPLOAD_DIR = "/uploads/";
+
+    // Tamaño máximo permitido (15 MB)
+    private static final long MAX_FILE_SIZE = 10 * 1024 * 1024;
 
     // Tipos permitidos
     private static final Set<String> TIPOS_PERMITIDOS = Set.of(
@@ -45,7 +48,7 @@ public class MultimediaServiceImpl implements MultimediaService {
 
     public boolean escanear(byte[] data) {
         logger.info("Iniciando escaneo antivirus para archivo de {} bytes", data.length);
-        
+
         try (Socket socket = new Socket("clamav", 3310)) {
             OutputStream out = socket.getOutputStream();
             InputStream in = socket.getInputStream();
@@ -56,32 +59,25 @@ public class MultimediaServiceImpl implements MultimediaService {
             while (offset < data.length) {
                 int chunk = Math.min(2048, data.length - offset);
 
-                // Tamaño del chunk (4 bytes)
                 byte[] size = ByteBuffer.allocate(4).putInt(chunk).array();
                 out.write(size);
 
-                // Chunk de datos
                 out.write(data, offset, chunk);
                 offset += chunk;
             }
 
-            // Enviar 0 para finalizar el stream
             out.write(ByteBuffer.allocate(4).putInt(0).array());
             out.flush();
 
-            // Leer respuesta
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             String result = reader.readLine();
 
-            boolean escaneoExitoso = result != null && result.contains("OK");
-            
-            if (escaneoExitoso) {
-                logger.info("Escaneo antivirus completado: ARCHIVO LIMPIO");
-            } else {
-                logger.warn("Escaneo antivirus completado: ARCHIVO INFECTADO - {}", result);
-            }
-            
-            return escaneoExitoso;
+            boolean ok = result != null && result.contains("OK");
+
+            if (ok) logger.info("Escaneo antivirus completado: ARCHIVO LIMPIO");
+            else logger.warn("Escaneo antivirus completado: ARCHIVO INFECTADO - {}", result);
+
+            return ok;
 
         } catch (IOException e) {
             logger.error("Error de conexión con ClamAV: {}", e.getMessage(), e);
@@ -95,14 +91,12 @@ public class MultimediaServiceImpl implements MultimediaService {
     @Override
     public MultimediaEntity guardarArchivo(MultipartFile archivo) {
         logger.info("Iniciando proceso de guardado para archivo: {}", archivo.getOriginalFilename());
-        
-        // Validar que el archivo no esté vacío
+
         if (archivo.isEmpty()) {
-            logger.warn("Intento de guardar archivo vacío: {}", archivo.getOriginalFilename());
+            logger.warn("Intento de guardar archivo vacío");
             throw new EmptyFileException("El archivo no puede estar vacío");
         }
 
-        // Validar nombre del archivo
         String nombreOriginal = archivo.getOriginalFilename();
         if (nombreOriginal == null || nombreOriginal.trim().isEmpty()) {
             logger.warn("Intento de guardar archivo sin nombre");
@@ -110,14 +104,15 @@ public class MultimediaServiceImpl implements MultimediaService {
         }
 
         nombreOriginal = nombreOriginal.toLowerCase();
-        logger.debug("Procesando archivo: {} con tipo: {}", nombreOriginal, archivo.getContentType());
 
         // VALIDAR MIME TYPE
         String tipo = archivo.getContentType();
         if (!TIPOS_PERMITIDOS.contains(tipo)) {
-            logger.warn("Tipo de archivo no permitido: {} para archivo: {}", tipo, nombreOriginal);
-            throw new InvalidFileTypeException("Tipo de archivo no permitido: " + tipo + 
-                    ". Tipos permitidos: PNG, JPG, JPEG, PDF, MP3, MP4");
+            logger.warn("Tipo de archivo no permitido: {}", tipo);
+            throw new InvalidFileTypeException(
+                    "Tipo de archivo no permitido: " + tipo +
+                    ". Tipos permitidos: PNG, JPG, JPEG, PDF, MP3, MP4"
+            );
         }
 
         // VALIDAR EXTENSIÓN
@@ -127,115 +122,91 @@ public class MultimediaServiceImpl implements MultimediaService {
                 nombreOriginal.endsWith(".pdf") ||
                 nombreOriginal.endsWith(".mp3") ||
                 nombreOriginal.endsWith(".mp4"))) {
-            logger.warn("Extensión no permitida para archivo: {}", nombreOriginal);
-            throw new InvalidFileTypeException("Extensión de archivo no permitida. " +
-                    "Extensiones permitidas: .png, .jpg, .jpeg, .pdf, .mp3, .mp4");
+
+            logger.warn("Extensión no permitida: {}", nombreOriginal);
+            throw new InvalidFileTypeException(
+                    "Extensión no permitida. Permitidas: .png, .jpg, .jpeg, .pdf, .mp3, .mp4"
+            );
         }
 
-        // Crear directorio si no existe
+        // VALIDAR TAMAÑO MÁXIMO (15 MB)
+        if (archivo.getSize() > MAX_FILE_SIZE) {
+            logger.warn("Archivo demasiado grande: {} bytes. Límite: {}", archivo.getSize(), MAX_FILE_SIZE);
+            throw new FileTooLargeException("El archivo excede el tamaño máximo permitido de 15 MB");
+        }
+
+        // Crear directorio
         Path uploadPath = Paths.get(UPLOAD_DIR);
         try {
             Files.createDirectories(uploadPath);
-            logger.debug("Directorio de uploads verificado/creado: {}", UPLOAD_DIR);
         } catch (IOException e) {
-            logger.error("No se pudo crear el directorio de uploads: {}", UPLOAD_DIR, e);
-            throw new FileStorageException("Error al crear el directorio de almacenamiento", e);
+            logger.error("Error creando directorio {}", UPLOAD_DIR, e);
+            throw new FileStorageException("Error al crear directorio de almacenamiento", e);
         }
 
         File destino = null;
+
         try {
-            // ESCANEAR CON CLAMAV
             byte[] bytes = archivo.getBytes();
-            logger.debug("Archivo leído en memoria, tamaño: {} bytes", bytes.length);
-            
+
+            // ESCANEAR CON CLAMAV
             if (!escanear(bytes)) {
-                logger.error("Archivo bloqueado por contener virus: {}", nombreOriginal);
-                throw new InfectedFileException("El archivo contiene un virus y fue bloqueado por seguridad");
+                throw new InfectedFileException("El archivo contiene un virus y fue bloqueado");
             }
 
             String nombreGuardado = System.currentTimeMillis() + "_" + nombreOriginal;
-            logger.debug("Nombre generado para guardar: {}", nombreGuardado);
 
-            // Guardar archivo en sistema de archivos
             destino = new File(UPLOAD_DIR + nombreGuardado);
             archivo.transferTo(destino);
-            logger.info("Archivo guardado exitosamente en: {}", destino.getAbsolutePath());
 
             String urlPublica = "/uploads/" + nombreGuardado;
 
-            // GUARDAR EN BD
             MultimediaEntity m = new MultimediaEntity();
             m.setUrl(urlPublica);
             m.setTipoArchivo(tipo);
 
-            MultimediaEntity entityGuardada = multimediaRepository.save(m);
-            logger.info("Archivo guardado en BD con ID: {}", entityGuardada.getId());
-            return entityGuardada;
+            return multimediaRepository.save(m);
 
         } catch (IOException e) {
-            logger.error("Error de E/S al procesar el archivo: {}", nombreOriginal, e);
+            logger.error("Error procesando archivo", e);
             throw new FileStorageException("Error al procesar el archivo", e);
+
         } catch (Exception e) {
-            logger.error("Error inesperado al guardar archivo: {}", nombreOriginal, e);
-            
-            // Limpiar archivo físico si se creó pero falló después
+
             if (destino != null && destino.exists()) {
-                try {
-                    if (destino.delete()) {
-                        logger.info("Archivo físico eliminado después de error: {}", destino.getAbsolutePath());
-                    } else {
-                        logger.warn("No se pudo eliminar el archivo físico después de error: {}", destino.getAbsolutePath());
-                    }
-                } catch (SecurityException secEx) {
-                    logger.warn("No se tiene permiso para eliminar el archivo físico: {}", destino.getAbsolutePath());
-                }
+                destino.delete();
             }
-            
-            // Relanzar excepciones específicas
+
             if (e instanceof InfectedFileException) {
                 throw (InfectedFileException) e;
             }
-            throw new FileStorageException("Error inesperado al procesar el archivo", e);
+
+            throw new FileStorageException("Error inesperado al procesar archivo", e);
         }
     }
 
     @Override
     public List<MultimediaEntity> findAll() {
-        logger.info("Buscando todos los archivos multimedia");
-        try {
-            List<MultimediaEntity> result = multimediaRepository.findAll();
-            logger.info("Se encontraron {} archivos multimedia", result.size());
-            return result;
-        } catch (Exception e) {
-            logger.error("Error al obtener listado de archivos multimedia", e);
-            throw new DataAccessException("Error al recuperar los archivos multimedia", e);
-        }
+        return multimediaRepository.findAll();
     }
 
     @Override
     public MultimediaResponseDTO obtenerImagen(Long id) {
-        logger.info("Buscando multimedia con ID: {}", id);
-        
-        if (id == null || id <= 0) {
-            logger.warn("ID inválido proporcionado: {}", id);
-            throw new InvalidIdException("ID de multimedia inválido");
-        }
+        MultimediaEntity m = multimediaRepository.findMultimediaEntityById(id);
 
-        MultimediaEntity multimedia = multimediaRepository.findMultimediaEntityById(id);
-
-        if (multimedia == null) {
-            logger.warn("No se encontró multimedia con ID: {}", id);
+        if (m == null) {
             throw new MultimediaNotFoundException("Multimedia no encontrado con ID: " + id);
         }
 
-        logger.debug("Multimedia encontrado: ID={}, Tipo={}, URL={}", 
-                    multimedia.getId(), multimedia.getTipoArchivo(), multimedia.getUrl());
-
         MultimediaResponseDTO dto = new MultimediaResponseDTO();
-        dto.setId(multimedia.getId());
-        dto.setUrl(multimedia.getUrl());
-        dto.setTipoArchivo(multimedia.getTipoArchivo());
-
+        dto.setId(m.getId());
+        dto.setUrl(m.getUrl());
+        dto.setTipoArchivo(m.getTipoArchivo());
         return dto;
+    }
+
+    // NUEVA EXCEPCIÓN PERSONALIZADA
+    public static class FileTooLargeException extends RuntimeException {
+        public FileTooLargeException(String msg) { super(msg); }
     }
 }
