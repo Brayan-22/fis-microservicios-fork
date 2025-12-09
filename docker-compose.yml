@@ -41,107 +41,75 @@ services:
   auth:
     <<: *microservice
     build: ./auth
-    container_name: fis-auth
+    # Removido container_name para permitir múltiples instancias
     environment:
       SERVER_PORT: 8080
+    deploy:
+      replicas: 3
 
   catalogo:
     <<: *microservice
     build: ./catalogo
-    container_name: fis-catalogo
     environment:
       SERVER_PORT: 8081
+    deploy:
+      replicas: 2
 
   contenido:
     <<: *microservice
     build: ./contenido
-    container_name: fis-contenido
     environment:
       SERVER_PORT: 8082
+    deploy:
+      replicas: 3
 
   email:
     <<: *microservice
     build: ./email
-    container_name: fis-email
     environment:
       SERVER_PORT: 8083
-
-  # filtrocontenido:
-  #   <<: *microservice
-  #   build: ./filtrocontenido
-  #   container_name: fis-filtrocontenido
-  #   environment:
-  #     SERVER_PORT: 8084
+    deploy:
+      replicas: 2
 
   foro:
     <<: *microservice
     build: ./foro
-    container_name: fis-foro
     environment:
       SERVER_PORT: 8085
+    deploy:
+      replicas: 3
 
   geo:
     <<: *microservice
     build: ./geo
-    container_name: fis-geo
     environment:
       SERVER_PORT: 8086
-
-  # mensajeria:
-  #   <<: *microservice
-  #   build: ./mensajeria
-  #   container_name: fis-mensajeria
-  #   environment:
-  #     SERVER_PORT: 8087
-
-  # moderacion:
-  #   <<: *microservice
-  #   build: ./moderacion
-  #   container_name: fis-moderacion
-  #   environment:
-  #     SERVER_PORT: 8088
+    deploy:
+      replicas: 2
 
   multimedia:
     <<: *microservice
     build: ./multimedia
-    container_name: fis-multimedia
     environment:
       SERVER_PORT: 8089
-
-  # noticia:
-  #   <<: *microservice
-  #   build: ./noticia
-  #   container_name: fis-noticia
-  #   environment:
-  #     SERVER_PORT: 8090
-
-  # pago:
-  #   <<: *microservice
-  #   build: ./pago
-  #   container_name: fis-pago
-  #   environment:
-  #     SERVER_PORT: 8091
-
-  # proveedor:
-  #   <<: *microservice
-  #   build: ./proveedor
-  #   container_name: fis-proveedor
-  #   environment:
-  #     SERVER_PORT: 8092
+    deploy:
+      replicas: 3
 
   usuario:
     <<: *microservice
     build: ./usuario
-    container_name: fis-usuario
     environment:
       SERVER_PORT: 8093
+    deploy:
+      replicas: 3
 
   vehiculo:
     <<: *microservice
     build: ./vehiculo
-    container_name: fis-vehiculo
     environment:
       SERVER_PORT: 8094
+    deploy:
+      replicas: 3
 
   # ---------------------
   #     NGINX
@@ -248,5 +216,3 @@ services:
 
 volumes:
   clamav-data:
-
-
