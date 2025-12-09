@@ -20,7 +20,7 @@ public class CorsConfig {
         config.setExposedHeaders(Arrays.asList(
                 "Access-Control-Allow-Origin",
                 "Access-Control-Allow-Credentials",
-                "Access-Control-Allow-Private-Network"  // ← Esto es crítico
+                "Access-Control-Allow-Private-Network"
         ));
         config.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
