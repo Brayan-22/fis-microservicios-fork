@@ -1,10 +1,10 @@
-package uni.fis.moderacion;
+package com.rolapet.Moderacion;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ModeracionApplicationTests {
+class ModeracionRolaPetApplicationTests {
 
 	@Test
 	void contextLoads() {
