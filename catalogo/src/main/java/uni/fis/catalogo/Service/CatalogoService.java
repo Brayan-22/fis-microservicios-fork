@@ -12,4 +12,5 @@ public interface CatalogoService {
     void eliminarCatalogoPorId(Integer id);
     ProductoResponse[] obtenerProductosPorCatalogoId(Integer catalogoId);
     ServicioResponse[] obtenerServiciosPorCatalogoId(Integer catalogoId);
+    CatalogoResponse[] obtenerTodosLosCatalogos();
 }

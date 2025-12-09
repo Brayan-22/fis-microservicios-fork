@@ -104,4 +104,18 @@ public class CatalogoServiceImp implements CatalogoService {
 
         return servicios;
     }
+    @Override
+    public CatalogoResponse[] obtenerTodosLosCatalogos() {
+        CatalogoResponse[] catalogos = catalogoRepository.findAll().stream()
+            .map(catalogo -> CatalogoResponse.builder()
+                    .id(catalogo.getId())
+                    .nombre(catalogo.getNombre())
+                    .descripcion(catalogo.getDescripcion())
+                    .idCategoria(catalogo.getIdCategoria())
+                    .idProveedor(catalogo.getIdProveedor())
+                    .build())
+            .toArray(CatalogoResponse[]::new);
+
+        return catalogos;
+    }
 }
