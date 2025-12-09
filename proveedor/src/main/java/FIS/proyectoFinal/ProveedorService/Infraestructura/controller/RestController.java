@@ -11,11 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import FIS.proyectoFinal.ProveedorService.Aplicacion.service.ProveedorService;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.requestsDTOS.DarBajoServicioRequestDTO;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.requestsDTOS.PublicarCatalogoRequestDTO;
-import FIS.proyectoFinal.ProveedorService.Dominio.modelo.requestsDTOS.PublicarComentarioRequestDTO;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.requestsDTOS.PublicarProductoRequestDTO;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.requestsDTOS.PublicarServicioRequestDTO;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.responseDTOS.CatalogoDTO;
-import FIS.proyectoFinal.ProveedorService.Dominio.modelo.responseDTOS.ComentarioDTO;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.responseDTOS.ProductoDTO;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.responseDTOS.ProveedorDTO;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.responseDTOS.ServicioDTO;
@@ -39,10 +37,6 @@ public class RestController {
     @PostMapping("/productos")
     public ResponseEntity<ProductoDTO> publicarProducto(@RequestBody PublicarProductoRequestDTO body) {
         return ResponseEntity.ok(proveedorService.publicarProducto(body));
-    }
-    @PostMapping("/comentarios")
-    public ResponseEntity<ComentarioDTO> publicarComentario(@RequestBody PublicarComentarioRequestDTO body) {
-        return ResponseEntity.ok(proveedorService.publicarComentario(body));
     }
     @DeleteMapping("/servicios/{servicioId}")
     public ResponseEntity<ServicioDTO> darBajaServicio(@PathVariable Integer servicioId,

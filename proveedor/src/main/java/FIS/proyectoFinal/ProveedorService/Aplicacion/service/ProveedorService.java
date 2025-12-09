@@ -8,11 +8,9 @@ import FIS.proyectoFinal.ProveedorService.Aplicacion.repository.ProveedorReposit
 import FIS.proyectoFinal.ProveedorService.Dominio.entidad.ProveedorEntity;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.requestsDTOS.DarBajoServicioRequestDTO;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.requestsDTOS.PublicarCatalogoRequestDTO;
-import FIS.proyectoFinal.ProveedorService.Dominio.modelo.requestsDTOS.PublicarComentarioRequestDTO;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.requestsDTOS.PublicarProductoRequestDTO;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.requestsDTOS.PublicarServicioRequestDTO;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.responseDTOS.CatalogoDTO;
-import FIS.proyectoFinal.ProveedorService.Dominio.modelo.responseDTOS.ComentarioDTO;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.responseDTOS.ProductoDTO;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.responseDTOS.ProveedorDTO;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.responseDTOS.ServicioDTO;
@@ -48,9 +46,6 @@ public class ProveedorService {
         return dto;
     }
 
-    public ComentarioDTO publicarComentario(PublicarComentarioRequestDTO req){
-        return catalogClient.publicarComentario(req);
-    }
 
     public ServicioDTO darDeBajaServicio(DarBajoServicioRequestDTO req){
         return catalogClient.darDeBajaServicio(req);

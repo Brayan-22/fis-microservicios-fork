@@ -13,10 +13,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.requestsDTOS.DarBajoServicioRequestDTO;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.requestsDTOS.PublicarCatalogoRequestDTO;
-import FIS.proyectoFinal.ProveedorService.Dominio.modelo.requestsDTOS.PublicarComentarioRequestDTO;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.requestsDTOS.PublicarProductoRequestDTO;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.requestsDTOS.PublicarServicioRequestDTO;
-import FIS.proyectoFinal.ProveedorService.Dominio.modelo.responseDTOS.ComentarioDTO;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.responseDTOS.ProductoDTO;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.responseDTOS.ProveedorDTO;
 import FIS.proyectoFinal.ProveedorService.Dominio.modelo.responseDTOS.ServicioDTO;
@@ -64,21 +62,6 @@ public class CatalogClient {
             Long.class
         ).getBody();
     }
-
-    public ComentarioDTO publicarComentario(PublicarComentarioRequestDTO req) {
-        HttpHeaders headers = createAuthHeaders();
-        String url = catalogBaseUrl + "/api/comentarios";
-        log.debug("POST to {} with Authorization={}", url, maskAuth(headers.getFirst(HttpHeaders.AUTHORIZATION)));
-        HttpEntity<PublicarComentarioRequestDTO> requestEntity = new HttpEntity<>(req, headers);
-
-        return restTemplate.exchange(
-            url,
-            HttpMethod.POST,
-            requestEntity,
-            ComentarioDTO.class
-        ).getBody();
-    }
-
     public ProductoDTO publicarProducto(PublicarProductoRequestDTO req) {
         Integer catalogoId = req.getCatalogoId();
         if (catalogoId == null) {
