@@ -27,16 +27,23 @@ public class LoginServiceImpl implements LoginService {
     }
 
     // cambio para subir la rama
-        @Override
-        public Token execute(Login login) throws NoUserFoundError {
-            //Obtenemos el TokenRequest, es decir, el nombre y rol desde el microservicio de usuario
-            TokenRequest req = repository.findNameAndRolUser(login.email(), login.password());
-            if (req == null) {
-                throw NoUserFoundError.of("Usuario no encontrado con las credenciales proporcionadas");
-            }
-            // Luego generamos el token.
-            TokenCommand tokenCommand = new GenerateTokenCommand(this.tokenService, req);
-
-            return tokenCommand.execute();
+    @Override
+    public Token execute(Login login) throws NoUserFoundError {
+        //Obtenemos el TokenRequest, es decir, el nombre y rol desde el microservicio de usuario
+        TokenRequest req = repository.findNameAndRolUser(login.email(), login.password());
+        if (req == null) {
+            throw NoUserFoundError.of("Usuario no encontrado con las credenciales proporcionadas");
         }
+        // Luego generamos el token.
+        TokenCommand tokenCommand = new GenerateTokenCommand(this.tokenService, req);
+
+        return tokenCommand.execute();
     }
+
+    @Override
+    public Token refresh(String refresh) {
+        return tokenService.refresh(refresh);
+    }
+
+
+}

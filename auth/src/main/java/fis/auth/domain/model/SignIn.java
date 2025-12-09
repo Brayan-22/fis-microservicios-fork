@@ -5,12 +5,11 @@ public record SignIn(
         String apellido1,
         String apellido2,
         String fechaNacimiento,
-        String documento,
+        Documento documento,
         Integer imgPerfil,
         String email,
         Integer strikes,
         Integer idRol,
-        Integer idMultimedia,
         String password,
         String emailTutor
 ) {
@@ -26,7 +25,6 @@ public record SignIn(
                 this.email,
                 this.strikes,
                 this.idRol,
-                this.idMultimedia,
                 newPassword,
                 null // este es completamente normal que sea nuelo
         );

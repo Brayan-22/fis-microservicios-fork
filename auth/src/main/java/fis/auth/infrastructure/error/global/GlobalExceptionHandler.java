@@ -21,19 +21,19 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoUserFoundError.class)
     public ResponseEntity<ApiResponse<?>> handleNoUserFoundError(NoUserFoundError err) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(ApiResponse.error(err.getMessage(), 404));
+                .body(ApiResponse.error("Auth: " + err.getMessage(), 404));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<?>> handleGenericException(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApiResponse.error("Error interno del servidor " + ex.getMessage(), 500));
+                .body(ApiResponse.error("Auth: Error interno del servidor " + ex.getMessage(), 500));
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiResponse<?>> handleIllegalArgument(IllegalArgumentException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse.error(ex.getMessage(), 400));
+                .body(ApiResponse.error("Auth: " + ex.getMessage(), 400));
     }
 
     // SIGN IN:
@@ -41,44 +41,44 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<ApiResponse<?>> handleUserAlreadyExists(UserAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(ApiResponse.error(ex.getMessage(), 409));
+                .body(ApiResponse.error("Auth: " + ex.getMessage(), 409));
     }
 
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<ApiResponse<?>> handleInvalidCredentials(InvalidCredentialsException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(ApiResponse.error(ex.getMessage(), 401));
+                .body(ApiResponse.error("Auth: " + ex.getMessage(), 401));
     }
 
     // ========== EXCEPCIONES DE DOMINIO ==========
     @ExceptionHandler(MissingRequiredFieldException.class)
     public ResponseEntity<ApiResponse<?>> handleMissingFields(MissingRequiredFieldException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse.error(ex.getMessage(), 400));
+                .body(ApiResponse.error("Auth: " + ex.getMessage(), 400));
     }
 
     @ExceptionHandler(TutorApprovalPendingException.class)
     public ResponseEntity<ApiResponse<?>> handleTutorApproval(TutorApprovalPendingException ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(ApiResponse.error(ex.getMessage(), 403));
+                .body(ApiResponse.error("Auth: " + ex.getMessage(), 403));
     }
 
     @ExceptionHandler(InvalidIdentificationException.class)
     public ResponseEntity<ApiResponse<?>> handleInvalidIdentification(InvalidIdentificationException ex) {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY) // 422
-                .body(ApiResponse.error(ex.getMessage(), 422));
+                .body(ApiResponse.error("Auth: " + ex.getMessage(), 422));
     }
 
     @ExceptionHandler(EmailApiErrorException.class)
     public ResponseEntity<ApiResponse<?>> handleEmailApiErrorException(EmailApiErrorException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR) //500
-                .body(ApiResponse.info(ex.getMessage(), 500));
+                .body(ApiResponse.info("Auth: " + ex.getMessage(), 500));
     }
 
     @ExceptionHandler(MessageSendException.class)
     public ResponseEntity<ApiResponse<?>> handleMessageSendException(MessageSendException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT) //409
-                .body(ApiResponse.info(ex.getMessage(), 409));
+                .body(ApiResponse.info("Auth: " + ex.getMessage(), 409));
     }
 
 }

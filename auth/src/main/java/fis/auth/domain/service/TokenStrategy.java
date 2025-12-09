@@ -7,4 +7,6 @@ public interface TokenStrategy {
     Token generate(TokenRequest tokenRequest);
 
     Token validate(String token);
+
+    Token refresh(String refreshToken);
 }

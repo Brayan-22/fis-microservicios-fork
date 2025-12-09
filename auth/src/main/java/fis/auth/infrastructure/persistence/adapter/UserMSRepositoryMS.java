@@ -3,11 +3,13 @@ package fis.auth.infrastructure.persistence.adapter;
 import fis.auth.application.repository.UserMSRepository;
 import fis.auth.domain.model.SignIn;
 import fis.auth.domain.model.TokenRequest;
+import fis.auth.infrastructure.dto.request.SignInRequest;
 import fis.auth.infrastructure.dto.request.UserValidateRequest;
 import fis.auth.infrastructure.dto.response.api.ApiResponse;
 import fis.auth.infrastructure.endpoints.UserEndpoint;
 import fis.auth.infrastructure.error.NoUserFoundError;
 import fis.auth.infrastructure.error.UserMSErrorHandler;
+import fis.auth.infrastructure.mapper.AuthMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -22,7 +24,7 @@ public class UserMSRepositoryMS implements UserMSRepository {
     private final UserMSErrorHandler errorHandler;
 
     public UserMSRepositoryMS(@Qualifier("user-ms") RestTemplate restTemplate,
-            UserMSErrorHandler errorHandler) {
+                              UserMSErrorHandler errorHandler) {
         this.restTemplate = restTemplate;
         this.errorHandler = errorHandler;
     }
@@ -70,8 +72,8 @@ public class UserMSRepositoryMS implements UserMSRepository {
         headers.setBasicAuth("admin", "admin123");
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<SignIn> signInHttp = new HttpEntity<>(
-                signIn,
+        HttpEntity<SignInRequest> signInHttp = new HttpEntity<>(
+                AuthMapper.toRequest(signIn),
                 headers);
 
         try {

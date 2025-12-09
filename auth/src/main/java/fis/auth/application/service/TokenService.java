@@ -22,4 +22,6 @@ public class TokenService {
     public Token validate(String token) {
         return tokenStrategy.validate(token);
     }
+
+    public Token refresh(String refreshToken){return tokenStrategy.refresh(refreshToken);}
 }

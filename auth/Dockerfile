@@ -2,7 +2,7 @@ FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
-RUN mvn clean package -DskipTests
+RUN MAVEN_OPTS="-Xmx256m -XX:MaxMetaspaceSize=128m" mvn -T 1C clean package -DskipTests
 
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app

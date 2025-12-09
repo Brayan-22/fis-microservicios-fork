@@ -5,4 +5,5 @@ import fis.auth.domain.model.Token;
 
 public interface LoginService {
     Token execute(Login login);
+    Token refresh(String refresh);
 }

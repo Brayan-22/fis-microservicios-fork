@@ -30,7 +30,7 @@ public class UserMSErrorHandler {
                     if (errorMessage.contains("email") || errorMessage.contains("correo")) {
                         throw UserAlreadyExistsException.byEmail(signIn.email());
                     } else if (errorMessage.contains("identificación")) {
-                        throw UserAlreadyExistsException.byIdentification(signIn.documento());
+                        throw UserAlreadyExistsException.byIdentification(signIn.documento().numeroDocumento());
                     }
                 }
                 throw UserAlreadyExistsException.byEmail("unknown");
