@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class PublicarComentarioRequestDTO {
-    private Long proveedorId;
+    private Integer proveedorId;
     private String targetType;
-    private Long targetId;
+    private Integer targetId;
     private String comentario;
     private Integer calificacion;
 }
