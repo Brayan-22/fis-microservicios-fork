@@ -1,13 +1,13 @@
-package uni.fis.geo;
+package com.RolaPet.Geolocalizacion;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GeoApplication {
+public class MicroservicioGeolocalizacionApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GeoApplication.class, args);
+		SpringApplication.run(MicroservicioGeolocalizacionApplication.class, args);
 	}
 
 }
