@@ -193,9 +193,6 @@ services:
         - multimedia
         - usuario
         - vehiculo
-      networks:
-        - reverse_proxy
-        - fis-network
       placement:
         constraints:
           - node.role == manager
@@ -206,3 +203,6 @@ services:
         reservations:
           cpus: '0.1'
           memory: 64M
+    networks:
+      - reverse_proxy
+      - fis-network
