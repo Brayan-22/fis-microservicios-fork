@@ -44,6 +44,12 @@ services:
     image: brayan22/fis-project:auth
     environment:
       SERVER_PORT: 8080
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
+      HTTP_BASIC_USER: ${HTTP_BASIC_USER}
+      HTTP_BASIC_PASSWORD: ${HTTP_BASIC_PASSWORD}
     healthcheck:
       <<: *healthcheck-defaults
       test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
@@ -58,6 +64,12 @@ services:
     image: brayan22/fis-project:catalogo
     environment:
       SERVER_PORT: 8081
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
+      HTTP_BASIC_USER: ${HTTP_BASIC_USER}
+      HTTP_BASIC_PASSWORD: ${HTTP_BASIC_PASSWORD}
     healthcheck:
       <<: *healthcheck-defaults
       test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
@@ -72,6 +84,12 @@ services:
     image: brayan22/fis-project:contenido
     environment:
       SERVER_PORT: 8082
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
+      HTTP_BASIC_USER: ${HTTP_BASIC_USER}
+      HTTP_BASIC_PASSWORD: ${HTTP_BASIC_PASSWORD}
     healthcheck:
       <<: *healthcheck-defaults
       test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
@@ -86,6 +104,12 @@ services:
     image: brayan22/fis-project:email
     environment:
       SERVER_PORT: 8083
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
+      HTTP_BASIC_USER: ${HTTP_BASIC_USER}
+      HTTP_BASIC_PASSWORD: ${HTTP_BASIC_PASSWORD}
     healthcheck:
       <<: *healthcheck-defaults
       test: ["CMD", "curl", "-f", "http://localhost:8083/actuator/health"]
@@ -100,6 +124,12 @@ services:
     image: brayan22/fis-project:foro
     environment:
       SERVER_PORT: 8085
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
+      HTTP_BASIC_USER: ${HTTP_BASIC_USER}
+      HTTP_BASIC_PASSWORD: ${HTTP_BASIC_PASSWORD}
     healthcheck:
       <<: *healthcheck-defaults
       test: ["CMD", "curl", "-f", "http://localhost:8085/actuator/health"]
@@ -114,6 +144,12 @@ services:
     image: brayan22/fis-project:geo
     environment:
       SERVER_PORT: 8086
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
+      HTTP_BASIC_USER: ${HTTP_BASIC_USER}
+      HTTP_BASIC_PASSWORD: ${HTTP_BASIC_PASSWORD}
     healthcheck:
       <<: *healthcheck-defaults
       test: ["CMD", "curl", "-f", "http://localhost:8086/actuator/health"]
@@ -128,6 +164,12 @@ services:
     image: brayan22/fis-project:multimedia
     environment:
       SERVER_PORT: 8089
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
+      HTTP_BASIC_USER: ${HTTP_BASIC_USER}
+      HTTP_BASIC_PASSWORD: ${HTTP_BASIC_PASSWORD}
     healthcheck:
       <<: *healthcheck-defaults
       test: ["CMD", "curl", "-f", "http://localhost:8089/actuator/health"]
@@ -142,6 +184,12 @@ services:
     image: brayan22/fis-project:usuario
     environment:
       SERVER_PORT: 8093
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
+      HTTP_BASIC_USER: ${HTTP_BASIC_USER}
+      HTTP_BASIC_PASSWORD: ${HTTP_BASIC_PASSWORD}
     healthcheck:
       <<: *healthcheck-defaults
       test: ["CMD", "curl", "-f", "http://localhost:8093/actuator/health"]
@@ -156,6 +204,12 @@ services:
     image: brayan22/fis-project:vehiculo
     environment:
       SERVER_PORT: 8094
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
+      HTTP_BASIC_USER: ${HTTP_BASIC_USER}
+      HTTP_BASIC_PASSWORD: ${HTTP_BASIC_PASSWORD}
     healthcheck:
       <<: *healthcheck-defaults
       test: ["CMD", "curl", "-f", "http://localhost:8094/actuator/health"]
