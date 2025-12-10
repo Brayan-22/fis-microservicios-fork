@@ -13,4 +13,6 @@ public interface ItemService {
     void eliminarServicioPorId(Integer id);
     void calificarProducto(Integer id, BigDecimal calificacion);
     void calificarServicio(Integer id, BigDecimal calificacion);
+    ProductoResponse[] obtenerTodosLosProductos();
+    ServicioResponse[] obtenerTodosLosServicios();
 }

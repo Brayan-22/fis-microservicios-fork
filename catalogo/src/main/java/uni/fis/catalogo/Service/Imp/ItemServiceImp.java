@@ -145,4 +145,35 @@ public class ItemServiceImp implements ItemService {
         servicio.setValoracion(calificacion);
         servicioRepository.save(servicio);
     }
+    @Override
+    public ProductoResponse[] obtenerTodosLosProductos() {
+        return productoRepository.findAll().stream().map(producto -> ProductoResponse.builder()
+                .id(producto.getId())
+                .idCatalogo(producto.getIdCatalogo())
+                .nombre(producto.getNombre())
+                .precio(producto.getPrecio())
+                .fechaCreacion(producto.getFechaCreacion())
+                .valoración(producto.getValoracion())
+                .disponible(producto.isDisponible())
+                .cantidad(producto.getCantidad())
+                .tamaño(producto.getTamano())
+                .peso(producto.getPeso())
+                .id_color(producto.getId_color())
+                .id_unidad_peso(producto.getId_unidad_peso())
+                .build()).toArray(ProductoResponse[]::new);
+    }
+    @Override
+    public ServicioResponse[] obtenerTodosLosServicios() {
+        return servicioRepository.findAll().stream().map(servicio -> ServicioResponse.builder()
+                .id(servicio.getId())
+                .idCatalogo(servicio.getIdCatalogo())
+                .nombre(servicio.getNombre())
+                .precio(servicio.getPrecio())
+                .fechaCreacion(servicio.getFechaCreacion())
+                .valoración(servicio.getValoracion())
+                .disponible(servicio.isDisponible())
+                .duracion(servicio.getDuracion())
+                .horario(servicio.getHorario())
+                .build()).toArray(ServicioResponse[]::new);
+    }
 }
