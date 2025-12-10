@@ -19,22 +19,20 @@ x-healthcheck-defaults: &healthcheck-defaults
   start_period: 30s
 
 x-microservice-resources: &microservice-resources
-  resources:
-    limits:
-      cpus: '1'
-      memory: 512M
-    reservations:
-      cpus: '1'
-      memory: 256M
+  limits:
+    cpus: '1'
+    memory: 512M
+  reservations:
+    cpus: '1'
+    memory: 256M
 
 x-clamav-resources: &clamav-resources
-  resources:
-    limits:
-      cpus: '1'
-      memory: 1G
-    reservations:
-      cpus: '0.5'
-      memory: 512M
+  limits:
+    cpus: '1'
+    memory: 1G
+  reservations:
+    cpus: '0.5'
+    memory: 512M
 
 x-microservice: &microservice
   <<: *service-defaults
