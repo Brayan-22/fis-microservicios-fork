@@ -133,4 +133,14 @@ public class CatalogController {
         CatalogoResponse[] catalogos = catalogoService.obtenerTodosLosCatalogos();
         return new ResponseEntity<>(catalogos, HttpStatus.OK);
     }
+    @GetMapping("/productos")
+    public ResponseEntity<ProductoResponse[]> obtenerTodosLosProductos() {
+        ProductoResponse[] productos = itemService.obtenerTodosLosProductos();
+        return new ResponseEntity<>(productos, HttpStatus.OK);
+    }
+    @GetMapping("/servicios")
+    public ResponseEntity<ServicioResponse[]> obtenerTodosLosServicios() {
+        ServicioResponse[] servicios = itemService.obtenerTodosLosServicios();
+        return new ResponseEntity<>(servicios, HttpStatus.OK);
+    }
 }
