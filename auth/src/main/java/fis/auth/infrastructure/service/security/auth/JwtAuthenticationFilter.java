@@ -25,7 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenInfoExtractor tokenInfoExtractor;
 
     public JwtAuthenticationFilter(@Qualifier("JWTTokenStrategy") TokenStrategy jwtTokenStrategy,
-                                   JwtTokenInfoExtractor tokenInfoExtractor) {
+            JwtTokenInfoExtractor tokenInfoExtractor) {
         this.jwtTokenStrategy = jwtTokenStrategy;
         this.tokenInfoExtractor = tokenInfoExtractor;
     }
@@ -34,9 +34,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
-        return path.equals("/api/v1/auth/login") ||
-                path.equals("/api/v1/auth/refresh") ||
-                path.equals("/api/v1/auth/sign-in");
+
+        return path.endsWith("/api/v1/auth/login") ||
+                path.endsWith("/api/v1/auth/refresh") ||
+                path.endsWith("/api/v1/auth/sign-in");
     }
 
     @Override
@@ -53,12 +54,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String username = tokenInfoExtractor.getUsername(token);
             String role = tokenInfoExtractor.getRole(token);
 
-            UsernamePasswordAuthenticationToken auth =
-                    new UsernamePasswordAuthenticationToken(
-                            username,
-                            null,
-                            List.of(new SimpleGrantedAuthority("ROLE_" + role))
-                    );
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                    username,
+                    null,
+                    List.of(new SimpleGrantedAuthority("ROLE_" + role)));
 
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
