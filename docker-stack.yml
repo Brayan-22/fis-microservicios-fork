@@ -12,12 +12,6 @@ x-service-defaults: &service-defaults
     - .env
   restart: always
 
-x-healthcheck-defaults: &healthcheck-defaults
-  interval: 30s
-  timeout: 10s
-  retries: 3
-  start_period: 30s
-
 x-microservice-resources: &microservice-resources
   limits:
     cpus: '1'
@@ -50,9 +44,6 @@ services:
       SECRET_KEY: ${SECRET_KEY}
       HTTP_BASIC_USER: ${HTTP_BASIC_USER}
       HTTP_BASIC_PASSWORD: ${HTTP_BASIC_PASSWORD}
-    healthcheck:
-      <<: *healthcheck-defaults
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
     deploy:
       replicas: 1
       placement:
@@ -70,9 +61,6 @@ services:
       SECRET_KEY: ${SECRET_KEY}
       HTTP_BASIC_USER: ${HTTP_BASIC_USER}
       HTTP_BASIC_PASSWORD: ${HTTP_BASIC_PASSWORD}
-    healthcheck:
-      <<: *healthcheck-defaults
-      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
     deploy:
       replicas: 1
       placement:
@@ -90,9 +78,6 @@ services:
       SECRET_KEY: ${SECRET_KEY}
       HTTP_BASIC_USER: ${HTTP_BASIC_USER}
       HTTP_BASIC_PASSWORD: ${HTTP_BASIC_PASSWORD}
-    healthcheck:
-      <<: *healthcheck-defaults
-      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
     deploy:
       replicas: 1
       placement:
@@ -110,9 +95,6 @@ services:
       SECRET_KEY: ${SECRET_KEY}
       HTTP_BASIC_USER: ${HTTP_BASIC_USER}
       HTTP_BASIC_PASSWORD: ${HTTP_BASIC_PASSWORD}
-    healthcheck:
-      <<: *healthcheck-defaults
-      test: ["CMD", "curl", "-f", "http://localhost:8083/actuator/health"]
     deploy:
       replicas: 1
       placement:
@@ -130,9 +112,6 @@ services:
       SECRET_KEY: ${SECRET_KEY}
       HTTP_BASIC_USER: ${HTTP_BASIC_USER}
       HTTP_BASIC_PASSWORD: ${HTTP_BASIC_PASSWORD}
-    healthcheck:
-      <<: *healthcheck-defaults
-      test: ["CMD", "curl", "-f", "http://localhost:8085/actuator/health"]
     deploy:
       replicas: 1
       placement:
@@ -150,9 +129,6 @@ services:
       SECRET_KEY: ${SECRET_KEY}
       HTTP_BASIC_USER: ${HTTP_BASIC_USER}
       HTTP_BASIC_PASSWORD: ${HTTP_BASIC_PASSWORD}
-    healthcheck:
-      <<: *healthcheck-defaults
-      test: ["CMD", "curl", "-f", "http://localhost:8086/actuator/health"]
     deploy:
       replicas: 1
       placement:
@@ -170,9 +146,6 @@ services:
       SECRET_KEY: ${SECRET_KEY}
       HTTP_BASIC_USER: ${HTTP_BASIC_USER}
       HTTP_BASIC_PASSWORD: ${HTTP_BASIC_PASSWORD}
-    healthcheck:
-      <<: *healthcheck-defaults
-      test: ["CMD", "curl", "-f", "http://localhost:8089/actuator/health"]
     deploy:
       replicas: 1
       placement:
@@ -190,9 +163,6 @@ services:
       SECRET_KEY: ${SECRET_KEY}
       HTTP_BASIC_USER: ${HTTP_BASIC_USER}
       HTTP_BASIC_PASSWORD: ${HTTP_BASIC_PASSWORD}
-    healthcheck:
-      <<: *healthcheck-defaults
-      test: ["CMD", "curl", "-f", "http://localhost:8093/actuator/health"]
     deploy:
       replicas: 1
       placement:
@@ -210,9 +180,6 @@ services:
       SECRET_KEY: ${SECRET_KEY}
       HTTP_BASIC_USER: ${HTTP_BASIC_USER}
       HTTP_BASIC_PASSWORD: ${HTTP_BASIC_PASSWORD}
-    healthcheck:
-      <<: *healthcheck-defaults
-      test: ["CMD", "curl", "-f", "http://localhost:8094/actuator/health"]
     deploy:
       replicas: 1
       placement:
