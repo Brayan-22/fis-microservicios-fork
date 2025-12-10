@@ -7,14 +7,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
-public class ServicioRequest{
+public class ServicioRequest {
     private String nombre;
     private BigDecimal precio;
     private String duracion;
     private LocalTime horario;
+    private Integer idMultimedia;
 }

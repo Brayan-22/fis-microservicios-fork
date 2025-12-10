@@ -51,6 +51,9 @@ public class Producto {
     @Column(name = "activo", nullable = false)
     private boolean disponible;
     
+    @Column(name = "id_multimedia")
+    private Integer idMultimedia;
+    
     @Column(name = "cantidad", table = "producto", nullable = false)
     private Integer cantidad;
     

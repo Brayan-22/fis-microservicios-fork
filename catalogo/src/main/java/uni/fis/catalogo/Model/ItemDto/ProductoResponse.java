@@ -7,11 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
 public class ProductoResponse {
     private Integer id;
     private Integer idCatalogo;
@@ -20,6 +20,7 @@ public class ProductoResponse {
     private Date fechaCreacion;
     private BigDecimal valoración;
     private boolean disponible;
+    private Integer idMultimedia;
     private Integer cantidad;
     private String tamaño;
     private BigDecimal peso;

@@ -14,7 +14,6 @@ import uni.fis.catalogo.Repository.ProductoRepository;
 import uni.fis.catalogo.Repository.ServicioRepository;
 import uni.fis.catalogo.Service.CatalogoService;
 
-
 @Service
 public class CatalogoServiceImp implements CatalogoService {
     @Autowired
@@ -49,6 +48,7 @@ public class CatalogoServiceImp implements CatalogoService {
                 .idProveedor(catalogo.getIdProveedor())
                 .build();
     }
+    
     @Override
     public void eliminarCatalogoPorId(Integer id) {
         if (!catalogoRepository.existsById(id)) {
@@ -56,16 +56,10 @@ public class CatalogoServiceImp implements CatalogoService {
         }
         catalogoRepository.deleteById(id);
     }
+    
     @Override
     public ProductoResponse[] obtenerProductosPorCatalogoId(Integer catalogoId) {
-        ProductoResponse[] productos = productoRepository.
-        
-        
-        
-        
-    
-        
-        findByIdCatalogo(catalogoId).stream()
+        ProductoResponse[] productos = productoRepository.findByIdCatalogo(catalogoId).stream()
             .map(producto -> ProductoResponse.builder()
                     .id(producto.getId())
                     .nombre(producto.getNombre())
@@ -75,17 +69,18 @@ public class CatalogoServiceImp implements CatalogoService {
                     .fechaCreacion(producto.getFechaCreacion())
                     .valoración(producto.getValoracion())
                     .disponible(producto.isDisponible())
+                    .idMultimedia(producto.getIdMultimedia())
                     .cantidad(producto.getCantidad())
                     .tamaño(producto.getTamano())
                     .peso(producto.getPeso())
                     .id_color(producto.getId_color())
                     .id_unidad_peso(producto.getId_unidad_peso())
                     .build())
-            .toArray(ProductoResponse[]::new);  
-
+            .toArray(ProductoResponse[]::new);
 
         return productos;
     }
+    
     @Override
     public ServicioResponse[] obtenerServiciosPorCatalogoId(Integer catalogoId) {
         ServicioResponse[] servicios = servicioRepository.findByIdCatalogo(catalogoId).stream()
@@ -97,6 +92,7 @@ public class CatalogoServiceImp implements CatalogoService {
                     .fechaCreacion(servicio.getFechaCreacion())
                     .valoración(servicio.getValoracion())
                     .disponible(servicio.isDisponible())
+                    .idMultimedia(servicio.getIdMultimedia())
                     .duracion(servicio.getDuracion())
                     .horario(servicio.getHorario())
                     .build())
@@ -104,6 +100,7 @@ public class CatalogoServiceImp implements CatalogoService {
 
         return servicios;
     }
+    
     @Override
     public CatalogoResponse[] obtenerTodosLosCatalogos() {
         CatalogoResponse[] catalogos = catalogoRepository.findAll().stream()

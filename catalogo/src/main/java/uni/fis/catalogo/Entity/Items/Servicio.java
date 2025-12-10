@@ -52,6 +52,9 @@ public class Servicio {
     @Column(name = "activo", nullable = false)
     private boolean disponible;
     
+    @Column(name = "id_multimedia")
+    private Integer idMultimedia;
+    
     @Column(name = "duracion", table = "servicio", nullable = false, columnDefinition = "INTERVAL")
     private String duracion;
     

@@ -33,6 +33,7 @@ public class ItemServiceImp implements ItemService {
                 .fechaCreacion(new Date())
                 .valoracion(new BigDecimal(0))
                 .disponible(true)
+                .idMultimedia(productoRequest.getIdMultimedia())
                 .cantidad((int)productoRequest.getCantidad())
                 .tamano(productoRequest.getTamaño())
                 .peso(productoRequest.getPeso())
@@ -48,6 +49,7 @@ public class ItemServiceImp implements ItemService {
                 .fechaCreacion(producto.getFechaCreacion())
                 .valoración(producto.getValoracion())
                 .disponible(producto.isDisponible())
+                .idMultimedia(producto.getIdMultimedia())
                 .cantidad(producto.getCantidad())
                 .tamaño(producto.getTamano())
                 .peso(producto.getPeso())
@@ -68,6 +70,7 @@ public class ItemServiceImp implements ItemService {
                 .fechaCreacion(producto.getFechaCreacion())
                 .valoración(producto.getValoracion())
                 .disponible(producto.isDisponible())
+                .idMultimedia(producto.getIdMultimedia())
                 .cantidad(producto.getCantidad())
                 .tamaño(producto.getTamano())
                 .peso(producto.getPeso())
@@ -75,6 +78,7 @@ public class ItemServiceImp implements ItemService {
                 .id_unidad_peso(producto.getId_unidad_peso())
                 .build();
     }
+    
     @Override
     public void eliminarProductoPorId(Integer id) {
         if (!productoRepository.existsById(id)) {
@@ -82,6 +86,7 @@ public class ItemServiceImp implements ItemService {
         }
         productoRepository.deleteById(id);
     }
+    
     @Override 
     public ServicioResponse agregarServicio(ServicioRequest servicioRequest, Integer catalogoId){
         Servicio servicio = Servicio.builder()
@@ -91,6 +96,7 @@ public class ItemServiceImp implements ItemService {
                 .fechaCreacion(new Date())
                 .valoracion(new BigDecimal(0))
                 .disponible(true)
+                .idMultimedia(servicioRequest.getIdMultimedia())
                 .duracion(servicioRequest.getDuracion())
                 .horario(servicioRequest.getHorario())
                 .build();
@@ -103,10 +109,12 @@ public class ItemServiceImp implements ItemService {
                 .fechaCreacion(servicio.getFechaCreacion())
                 .valoración(servicio.getValoracion())
                 .disponible(servicio.isDisponible())
+                .idMultimedia(servicio.getIdMultimedia())
                 .duracion(servicio.getDuracion())
                 .horario(servicio.getHorario())
                 .build();
-    }   
+    }
+    
     @Override 
     public ServicioResponse obtenerServicioPorId(Integer id) {
         Servicio servicio = servicioRepository.findById(id)
@@ -119,10 +127,12 @@ public class ItemServiceImp implements ItemService {
                 .fechaCreacion(servicio.getFechaCreacion())
                 .valoración(servicio.getValoracion())
                 .disponible(servicio.isDisponible())
+                .idMultimedia(servicio.getIdMultimedia())
                 .duracion(servicio.getDuracion())
                 .horario(servicio.getHorario())
                 .build();
-    }  
+    }
+    
     @Override 
     public void eliminarServicioPorId(Integer id) {
         if (!servicioRepository.existsById(id)) {
@@ -130,14 +140,15 @@ public class ItemServiceImp implements ItemService {
         }
         servicioRepository.deleteById(id);
     }
-    @Override
     
+    @Override
     public void calificarProducto(Integer id, BigDecimal calificacion) {
         Producto producto = productoRepository.findById(id)
                 .orElseThrow(() -> new ItemNotFoundException("Producto con el id "+ id + " no fue encontrado", "PRODUCTO_NOT_FOUND"));
         producto.setValoracion(calificacion);
         productoRepository.save(producto);
-    }   
+    }
+    
     @Override
     public void calificarServicio(Integer id, BigDecimal calificacion) {
         Servicio servicio = servicioRepository.findById(id)
@@ -147,33 +158,43 @@ public class ItemServiceImp implements ItemService {
     }
     @Override
     public ProductoResponse[] obtenerTodosLosProductos() {
-        return productoRepository.findAll().stream().map(producto -> ProductoResponse.builder()
-                .id(producto.getId())
-                .idCatalogo(producto.getIdCatalogo())
-                .nombre(producto.getNombre())
-                .precio(producto.getPrecio())
-                .fechaCreacion(producto.getFechaCreacion())
-                .valoración(producto.getValoracion())
-                .disponible(producto.isDisponible())
-                .cantidad(producto.getCantidad())
-                .tamaño(producto.getTamano())
-                .peso(producto.getPeso())
-                .id_color(producto.getId_color())
-                .id_unidad_peso(producto.getId_unidad_peso())
-                .build()).toArray(ProductoResponse[]::new);
+        ProductoResponse[] productos = productoRepository.findAll().stream()
+            .map(producto -> ProductoResponse.builder()
+                    .id(producto.getId())
+                    .idCatalogo(producto.getIdCatalogo())
+                    .nombre(producto.getNombre())
+                    .precio(producto.getPrecio())
+                    .fechaCreacion(producto.getFechaCreacion())
+                    .valoración(producto.getValoracion())
+                    .disponible(producto.isDisponible())
+                    .idMultimedia(producto.getIdMultimedia())
+                    .cantidad(producto.getCantidad())
+                    .tamaño(producto.getTamano())
+                    .peso(producto.getPeso())
+                    .id_color(producto.getId_color())
+                    .id_unidad_peso(producto.getId_unidad_peso())
+                    .build())
+            .toArray(ProductoResponse[]::new);
+
+        return productos;
     }
     @Override
     public ServicioResponse[] obtenerTodosLosServicios() {
-        return servicioRepository.findAll().stream().map(servicio -> ServicioResponse.builder()
-                .id(servicio.getId())
-                .idCatalogo(servicio.getIdCatalogo())
-                .nombre(servicio.getNombre())
-                .precio(servicio.getPrecio())
-                .fechaCreacion(servicio.getFechaCreacion())
-                .valoración(servicio.getValoracion())
-                .disponible(servicio.isDisponible())
-                .duracion(servicio.getDuracion())
-                .horario(servicio.getHorario())
-                .build()).toArray(ServicioResponse[]::new);
+        ServicioResponse[] servicios = servicioRepository.findAll().stream()
+            .map(servicio -> ServicioResponse.builder()
+                    .id(servicio.getId())
+                    .idCatalogo(servicio.getIdCatalogo())
+                    .nombre(servicio.getNombre())
+                    .precio(servicio.getPrecio())
+                    .fechaCreacion(servicio.getFechaCreacion())
+                    .valoración(servicio.getValoracion())
+                    .disponible(servicio.isDisponible())
+                    .idMultimedia(servicio.getIdMultimedia())
+                    .duracion(servicio.getDuracion())
+                    .horario(servicio.getHorario())
+                    .build())
+            .toArray(ServicioResponse[]::new);
+
+        return servicios;
     }
 }

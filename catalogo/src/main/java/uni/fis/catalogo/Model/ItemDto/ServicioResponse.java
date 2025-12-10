@@ -8,11 +8,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
 public class ServicioResponse {
     private Integer id;
     private Integer idCatalogo;
@@ -21,6 +21,7 @@ public class ServicioResponse {
     private Date fechaCreacion;
     private BigDecimal valoración;
     private boolean disponible;
+    private Integer idMultimedia;
     private String duracion;
     private LocalTime horario;
 }
