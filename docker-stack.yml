@@ -1,0 +1,210 @@
+version: '3.8'
+networks:
+  fis-network:
+    driver: overlay
+  reverse_proxy:
+    external: true
+
+x-service-defaults: &service-defaults
+  networks:
+    - fis-network
+  env_file:
+    - .env
+  restart: always
+
+x-healthcheck-defaults: &healthcheck-defaults
+  interval: 30s
+  timeout: 10s
+  retries: 3
+  start_period: 30s
+
+x-microservice-resources: &microservice-resources
+  resources:
+    limits:
+      cpus: '1'
+      memory: 512M
+    reservations:
+      cpus: '1'
+      memory: 256M
+
+x-clamav-resources: &clamav-resources
+  resources:
+    limits:
+      cpus: '1'
+      memory: 1G
+    reservations:
+      cpus: '0.5'
+      memory: 512M
+
+x-microservice: &microservice
+  <<: *service-defaults
+
+services:
+
+  auth:
+    <<: *microservice
+    image: brayan22/fis-project:auth
+    environment:
+      SERVER_PORT: 8080
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == worker
+      resources: *microservice-resources
+  catalogo:
+    <<: *microservice
+    image: brayan22/fis-project:catalogo
+    environment:
+      SERVER_PORT: 8081
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == worker
+      resources: *microservice-resources
+  contenido:
+    <<: *microservice
+    image: brayan22/fis-project:contenido
+    environment:
+      SERVER_PORT: 8082
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == worker
+      resources: *microservice-resources
+  email:
+    <<: *microservice
+    image: brayan22/fis-project:email
+    environment:
+      SERVER_PORT: 8083
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: ["CMD", "curl", "-f", "http://localhost:8083/actuator/health"]
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == worker
+      resources: *microservice-resources
+  foro:
+    <<: *microservice
+    image: brayan22/fis-project:foro
+    environment:
+      SERVER_PORT: 8085
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: ["CMD", "curl", "-f", "http://localhost:8085/actuator/health"]
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == worker
+      resources: *microservice-resources
+  geo:
+    <<: *microservice
+    image: brayan22/fis-project:geo
+    environment:
+      SERVER_PORT: 8086
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: ["CMD", "curl", "-f", "http://localhost:8086/actuator/health"]
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == worker
+      resources: *microservice-resources
+  multimedia:
+    <<: *microservice
+    image: brayan22/fis-project:multimedia
+    environment:
+      SERVER_PORT: 8089
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: ["CMD", "curl", "-f", "http://localhost:8089/actuator/health"]
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == worker
+      resources: *microservice-resources
+  usuario:
+    <<: *microservice
+    image: brayan22/fis-project:usuario
+    environment:
+      SERVER_PORT: 8093
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: ["CMD", "curl", "-f", "http://localhost:8093/actuator/health"]
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == worker
+      resources: *microservice-resources
+  vehiculo:
+    <<: *microservice
+    image: brayan22/fis-project:vehiculo
+    environment:
+      SERVER_PORT: 8094
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: ["CMD", "curl", "-f", "http://localhost:8094/actuator/health"]
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == worker
+      resources: *microservice-resources
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    <<: *service-defaults
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=reverse_proxy"
+        - "traefik.http.routers.fis-project.entrypoints=websecure"
+        - "traefik.http.routers.fis-project.tls.certresolver=production"
+        - "traefik.http.routers.fis-project.tls=true"
+        - "traefik.http.routers.fis-project.rule=Host(`rolapetapp.glud.org`)"
+        - "traefik.http.routers.fis-project.service=fis-project"
+        - "traefik.http.services.fis-project.loadbalancer.server.port=80"
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      depends_on:
+        - auth
+        - catalogo
+        - contenido
+        - email
+        - foro
+        - geo
+        - multimedia
+        - usuario
+        - vehiculo
+      networks:
+        - reverse_proxy
+        - fis-network
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
